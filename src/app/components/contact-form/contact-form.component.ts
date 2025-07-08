@@ -1,5 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CategoryService } from '../../services/category.service';
+import { GroupService } from '../../services/group.service';
+import { Category } from '../../models/Category';
+import { Group } from '../../models/Group';
+import { SearchServiceService } from '../../services/search-service.service';
 
 @Component({
   selector: 'app-contact-form',
@@ -7,14 +12,18 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
   templateUrl: './contact-form.component.html',
   styleUrl: './contact-form.component.css',
 })
-export class ContactFormComponent {
+export class ContactFormComponent implements OnInit{
   contactForm: FormGroup;
-  selectedCategories: any[] = [];
-  selectedGroups: any[] = [];
+  selectedCategories: Category[] = [];
+  selectedGroups: Group[] = [];
   newCategory = '';
   newGroup = '';
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private categoryService: CategoryService,
+    private groupService: GroupService
+  ) {
     this.contactForm = this.fb.group({
       firstname: ['', Validators.required],
       lastname: ['', Validators.required],
@@ -28,6 +37,25 @@ export class ContactFormComponent {
       note: [''],
       photo: [''],
     });
+  }
+  ngOnInit(): void {
+
+
+    this.getCategoriesData()
+    this.getGroupData()
+  }
+
+
+  getCategoriesData() {
+    this.categoryService
+      .getCategories()
+      .subscribe((data) => (this.selectedCategories = data));
+  }
+
+  getGroupData() {
+    this.groupService
+      .getGroupies()
+      .subscribe((data) => (this.selectedGroups = data));
   }
 
   // Métodos para criar campos dinâmicos
@@ -131,9 +159,7 @@ export class ContactFormComponent {
   }
 
   onSubmit(): void {
-    if (this.contactForm.valid) {
       console.log(this.contactForm.value);
       // Salvar contato
-    }
   }
 }

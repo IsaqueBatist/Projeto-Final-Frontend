@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ContactService } from '../../services/contact.service';
 import { Contact } from '../../models/Contact';
+import { SearchServiceService } from '../../services/search-service.service';
 
 @Component({
   selector: 'app-contacts',
@@ -11,15 +12,46 @@ import { Contact } from '../../models/Contact';
 export class ContactsComponent implements OnInit {
   contacts: Contact[] = [];
 
-  constructor(private contactService: ContactService) {}
+  constructor(
+    private contactService: ContactService,
+    private searchService: SearchServiceService
+  ) {}
 
   ngOnInit(): void {
-    this.getContactData();
+    //Barra de pesquisa
+    this.searchService.searchTerm$.subscribe((term) => {
+      this.contactService
+        .searchByPartialName(term)
+        .subscribe((data) => (this.contacts = data));
+    });
+    //Grupos
+    this.searchService.selectedGroup$.subscribe((groupName) => {
+      if (groupName) {
+        this.contactService
+          .searchByGroup(groupName || '')
+          .subscribe((data) => (this.contacts = data));
+      } else {
+        this.getContactData();
+      }
+    });
+
+    //Category
+    this.searchService.selectedCategory$.subscribe((categoryName) => {
+      if (categoryName) {
+        this.contactService
+          .searchByCategory(categoryName || '')
+          .subscribe((data) => (this.contacts = data));
+      } else {
+        this.getContactData();
+      }
+    });
   }
 
   getInitials(firstname: string, lastname: string): string {
-  return `${firstname?.charAt(0) || ''}${lastname?.charAt(0) || ''}`.toUpperCase();
-}
+    return `${firstname?.charAt(0) || ''}${
+      lastname?.charAt(0) || ''
+    }`.toUpperCase();
+  }
 
   getContactData() {
     this.contactService
@@ -27,8 +59,10 @@ export class ContactsComponent implements OnInit {
       .subscribe((data) => (this.contacts = data));
   }
 
-  deleteContact(id: number){
-    console.log('deleta')
-    this.contactService.deleteContact(id).subscribe(() => this.getContactData)
+  deleteContact(id: number) {
+    console.log('deleta');
+    this.contactService
+      .deleteContact(id)
+      .subscribe(() => this.getContactData());
   }
 }

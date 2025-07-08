@@ -114,11 +114,12 @@
                       />
                     </div>
                     <div class="col-md-3">
-                      <select class="form-select" formControlName="type">
-                        <option value="personal">Pessoal</option>
-                        <option value="work">Trabalho</option>
-                        <option value="other">Outro</option>
-                      </select>
+                      <input
+                        class="form-control"
+                        type="Text"
+                        placeholder="label"
+                        formControlName="type"
+                      />
                     </div>
                     <div class="col-md-1">
                       <button
@@ -162,12 +163,12 @@
                       />
                     </div>
                     <div class="col-md-3">
-                      <select class="form-select" formControlName="type">
-                        <option value="mobile">Celular</option>
-                        <option value="home">Residencial</option>
-                        <option value="work">Trabalho</option>
-                        <option value="other">Outro</option>
-                      </select>
+                      <input
+                        class="form-control"
+                        formControlName="type"
+                        type="text"
+                        placeholder="label"
+                      />
                     </div>
                     <div class="col-md-1">
                       <button
@@ -263,8 +264,8 @@
                 <div class="border rounded p-3">
                   <!-- Badges das categorias selecionadas -->
                   <div class="d-flex flex-wrap gap-2 mb-3">
-                    <ng-container
-                      *ngFor="let category of selectedCategories; let i = index"
+                    <!-- <ng-container
+                      *ngFor="let category of categories; let i = index"
                     >
                       <span class="badge bg-primary d-flex align-items-center">
                         {{ category.name }}
@@ -275,7 +276,7 @@
                           aria-label="Remover"
                         ></button>
                       </span>
-                    </ng-container>
+                    </ng-container> -->
                   </div>
 
                   <!-- Input para adicionar nova categoria -->
@@ -304,8 +305,8 @@
                 <div class="border rounded p-3">
                   <!-- Badges dos grupos selecionados -->
                   <div class="d-flex flex-wrap gap-2 mb-3">
-                    <ng-container
-                      *ngFor="let group of selectedGroups; let i = index"
+                    <!-- <ng-container
+                      *ngFor="let group of groups; let i = index"
                     >
                       <span class="badge bg-success d-flex align-items-center">
                         {{ group.name }}
@@ -316,7 +317,7 @@
                           aria-label="Remover"
                         ></button>
                       </span>
-                    </ng-container>
+                    </ng-container> -->
                   </div>
 
                   <!-- Input para adicionar novo grupo -->
@@ -359,7 +360,7 @@
                   <button
                     type="submit"
                     class="btn btn-primary"
-                    [disabled]="!contactForm.valid"
+                    (click)="onSubmit()"
                   >
                     Salvar
                   </button>

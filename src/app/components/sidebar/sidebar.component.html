@@ -27,7 +27,11 @@
       <i class="bi bi-bookmark"></i>
       <span>Categories</span>
     </div>
-    <a href="#" class="text-white" (click)="openModal(modalCreateCategory)">
+    <a
+      href="#"
+      class="text-white"
+      (click)="openCategoryModal(modalCreateCategory)"
+    >
       <i class="bi bi-plus-circle"></i>
     </a>
   </div>
@@ -35,11 +39,14 @@
   <ul class="list-unstyled ps-4 d-flex flex-column gap-2">
     <li *ngFor="let category of categories" class="sidebar-item">
       <div class="d-flex justify-content-between align-items-center">
-        <a href="#" class="text-white text-decoration-none py-1 flex-grow-1">
+        <a href="#" class="text-white text-decoration-none py-1 flex-grow-1" (click)="onSelectCategory(category)">
           {{ category.name }}
         </a>
         <div class="sidebar-actions">
-          <i class="bi bi-pencil text-white me-2 cursor-pointer"></i>
+          <i
+            class="bi bi-pencil text-white me-2 cursor-pointer"
+            (click)="openCategoryModal(modalCreateCategory, category.id)"
+          ></i>
           <i
             class="bi bi-trash text-danger cursor-pointer"
             (click)="deleteCategory(category.id)"
@@ -55,7 +62,11 @@
       <i class="bi bi-people"></i>
       <span>Grupos</span>
     </div>
-    <a href="#" class="text-white" (click)="openModal(modalCreateGroup)">
+    <a
+      href="#"
+      class="text-white"
+      (click)="openCategoryModal(modalCreateGroup)"
+    >
       <i class="bi bi-plus-circle"></i>
     </a>
   </div>
@@ -63,11 +74,14 @@
   <ul class="list-unstyled ps-4 d-flex flex-column gap-2">
     <li *ngFor="let group of groups" class="sidebar-item">
       <div class="d-flex justify-content-between align-items-center">
-        <a href="#" class="text-white text-decoration-none py-1 flex-grow-1">
+        <a href="#" class="text-white text-decoration-none py-1 flex-grow-1" (click)="onSelectGroup(group)">
           {{ group.name }}
         </a>
         <div class="sidebar-actions">
-          <i class="bi bi-pencil text-white me-2 cursor-pointer"></i>
+          <i
+            class="bi bi-pencil text-white me-2 cursor-pointer"
+            (click)="openCategoryModal(modalCreateGroup, group.id)"
+          ></i>
           <i
             class="bi bi-trash text-danger cursor-pointer"
             (click)="deleteGroup(group.id)"
@@ -93,9 +107,7 @@
   </div>
   <div class="modal-footer">
     <button class="btn btn-secondary" (click)="modal.close()">Cancel</button>
-    <button class="btn btn-success" (click)="createCategory(modal)">
-      Save
-    </button>
+    <button class="btn btn-success" (click)="saveCategory(modal)">Save</button>
   </div>
 </ng-template>
 
@@ -114,8 +126,6 @@
   </div>
   <div class="modal-footer">
     <button class="btn btn-secondary" (click)="modal.close()">Cancel</button>
-    <button class="btn btn-success" (click)="createGroup(modal)">
-      Save
-    </button>
+    <button class="btn btn-success" (click)="saveGroup(modal)">Save</button>
   </div>
 </ng-template>

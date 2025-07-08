@@ -7,7 +7,7 @@ import { Contact } from '../models/Contact';
   providedIn: 'root',
 })
 export class ContactService {
-  private apiUrl = 'http://localhost:8080/contacts';
+  private apiUrl = 'http://3.95.24.238contacts';
 
   constructor(private http: HttpClient) {}
 
@@ -34,5 +34,23 @@ export class ContactService {
   // DELETE
   deleteContact(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
+  searchByPartialName(name: string): Observable<Contact[]> {
+    return this.http.get<Contact[]>(`${this.apiUrl}/search/by-name`, {
+      params: new HttpParams().set('name', name),
+    });
+  }
+
+  searchByCategory(categoryName: string): Observable<Contact[]> {
+    return this.http.get<Contact[]>(`${this.apiUrl}/search/by-category`, {
+      params: new HttpParams().set('categoryName', categoryName),
+    });
+  }
+
+  searchByGroup(groupName: string): Observable<Contact[]> {
+    return this.http.get<Contact[]>(`${this.apiUrl}/search/by-group`, {
+      params: new HttpParams().set('groupName', groupName),
+    });
   }
 }
