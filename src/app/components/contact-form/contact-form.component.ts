@@ -9,6 +9,10 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class ContactFormComponent {
   contactForm: FormGroup;
+  selectedCategories: any[] = [];
+  selectedGroups: any[] = [];
+  newCategory = '';
+  newGroup = '';
 
   constructor(private fb: FormBuilder) {
     this.contactForm = this.fb.group({
@@ -96,6 +100,34 @@ export class ContactFormComponent {
 
   removeAddress(index: number): void {
     this.addresses.removeAt(index);
+  }
+
+  addCategory(): void {
+    if (this.newCategory.trim()) {
+      this.selectedCategories.push({
+        id: Date.now(), // ID temporário
+        name: this.newCategory.trim(),
+      });
+      this.newCategory = '';
+    }
+  }
+
+  removeCategory(index: number): void {
+    this.selectedCategories.splice(index, 1);
+  }
+
+  addGroup(): void {
+    if (this.newGroup.trim()) {
+      this.selectedGroups.push({
+        id: Date.now(), // ID temporário
+        name: this.newGroup.trim(),
+      });
+      this.newGroup = '';
+    }
+  }
+
+  removeGroup(index: number): void {
+    this.selectedGroups.splice(index, 1);
   }
 
   onSubmit(): void {
