@@ -5,6 +5,7 @@ export interface Address {
   neighborhood: string;
   city: string;
   state: string;
+  street: string;
   country: string;
   postalCode: string;
 }

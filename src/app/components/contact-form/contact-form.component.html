@@ -53,7 +53,7 @@
       class="row g-2 mb-2"
     >
       <div class="col-12 col-md-4">
-        <input formControlName="type" class="form-control" placeholder="Label" />
+        <input formControlName="label" class="form-control" placeholder="Label" />
       </div>
       <div class="col-10 col-md-7">
         <input formControlName="email" type="email" class="form-control" placeholder="email@exemplo.com" />
@@ -74,10 +74,10 @@
       class="row g-2 mb-2"
     >
       <div class="col-12 col-md-4">
-        <input formControlName="type" class="form-control" placeholder="Label" />
+        <input formControlName="label" class="form-control" placeholder="Label" />
       </div>
       <div class="col-10 col-md-7">
-        <input formControlName="number" type="tel" class="form-control" placeholder="(00) 00000-0000" />
+        <input formControlName="phoneNumber" type="tel" class="form-control" placeholder="(00) 00000-0000" />
       </div>
       <div class="col-2 d-flex align-items-center">
         <i class="bi bi-x ms-2" style="cursor: pointer" (click)="removePhone(i)"></i>
@@ -114,10 +114,11 @@
           <input formControlName="state" class="form-control" placeholder="Estado" />
         </div>
         <div class="col-12 col-md-3">
-          <input formControlName="zipCode" class="form-control" placeholder="CEP" />
+          <input formControlName="postalCode" class="form-control" placeholder="CEP" />
         </div>
       </div>
       <input formControlName="neighborhood" class="form-control mb-2" placeholder="Bairro" />
+      
       <input formControlName="complement" class="form-control mb-2" placeholder="Complemento" />
     </div>
     <button type="button" class="btn btn-outline-primary btn-sm" (click)="addAddress()">+ Adicionar Endereço</button>
@@ -145,11 +146,11 @@
     <label class="form-label">Grupos</label>
     <div class="d-flex flex-wrap gap-2 mb-2">
       <div
-        *ngFor="let group of groups.value"
+        *ngFor="let group of groups.value; let i = index"
         class="badge bg-light border text-secondary d-flex align-items-center px-2 py-1 rounded-pill"
       >
         {{ group.name }}
-        <i class="bi bi-x ms-2" style="cursor: pointer" (click)="removeGroup(group)"></i>
+        <i class="bi bi-x ms-2" style="cursor: pointer" (click)="removeGroup(i)"></i>
       </div>
     </div>
     <i class="bi bi-plus-lg" (click)="openModal(modalAddGroup)" style="cursor: pointer"></i>

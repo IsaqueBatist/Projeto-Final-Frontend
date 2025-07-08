@@ -19,7 +19,7 @@
             class="card-actions position-absolute top-0 end-0 p-2 actions-hidden"
           >
             <i class="bi bi-pencil text-primary me-2 cursor-pointer fs-5"
-            [routerLink]="['edit/',contact.id]"
+            [routerLink]="['edit/', contact.id]"
             ></i>
             <i
               class="bi bi-trash text-danger cursor-pointer fs-5"
@@ -33,16 +33,16 @@
             <div>
               <strong>{{ contact.firstname + " " + contact.lastname }} </strong
               ><br />
-              <small class="text-muted">{{ contact.groups[0].name }}</small>
+              <small class="text-muted">{{ contact.groups[0]?.name }}</small>
             </div>
           </div>
           <div class="text-muted small">
             <div>
               <i class="bi bi-telephone"></i>
-              {{ contact.phones[0].phoneNumber }}
+              {{ contact.phones[0]?.phoneNumber }}
             </div>
             <div>
-              <i class="bi bi-envelope"></i> {{ contact.emails[0].email }}
+              <i class="bi bi-envelope"></i> {{ contact.emails[0]?.email }}
             </div>
           </div>
         </div>

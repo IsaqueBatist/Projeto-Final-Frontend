@@ -60,7 +60,6 @@ export class ContactsComponent implements OnInit {
   }
 
   deleteContact(id: number) {
-    console.log('deleta');
     this.contactService
       .deleteContact(id)
       .subscribe(() => this.getContactData());

@@ -1,13 +1,12 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CategoryService } from '../../services/category.service';
-import { GroupService } from '../../services/group.service';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Category } from '../../models/Category';
 import { Group } from '../../models/Group';
-import { SearchServiceService } from '../../services/search-service.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { CategoryService } from '../../services/category.service';
 import { ContactService } from '../../services/contact.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { GroupService } from '../../services/group.service';
 
 @Component({
   selector: 'app-contact-form',
@@ -15,15 +14,13 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './contact-form.component.html',
   styleUrl: './contact-form.component.css',
 })
-export class ContactFormComponent implements OnInit{
+export class ContactFormComponent implements OnInit {
   contactForm: FormGroup;
   selectedCategories: Category[] = [];
   selectedGroups: Group[] = [];
-  newCategory = '';
-  newGroup = '';
-  selectedGroup: string = '';
-  selectedCategory: string = ''
-  
+  selectedGroup: Group = {} as Group;
+  selectedCategory: Category = {} as Category;
+
   constructor(
     private fb: FormBuilder,
     private categoryService: CategoryService,
@@ -36,6 +33,7 @@ export class ContactFormComponent implements OnInit{
     this.contactForm = this.fb.group({
       firstname: ['', Validators.required],
       lastname: ['', Validators.required],
+      nickname: [''],
       birthDate: [''],
       isFavorite: [false],
       emails: this.fb.array([this.createEmailField()]),
@@ -47,12 +45,12 @@ export class ContactFormComponent implements OnInit{
     });
   }
   ngOnInit(): void {
-    let contactId =  Number(this.activedRoute.snapshot.paramMap.get('id'));
-    if (contactId !=0) {
+    let contactId = Number(this.activedRoute.snapshot.paramMap.get('id'));
+    if (contactId != 0) {
       this.setContactById(contactId);
     }
-    this.getCategoriesData()
-    this.getGroupData()
+    this.getCategoriesData();
+    this.getGroupData();
   }
 
   setContactById(id: number) {
@@ -64,26 +62,28 @@ export class ContactFormComponent implements OnInit{
           lastname: contact.lastname,
           birthDate: contact.birthDate,
           isFavorite: contact.isFavorite,
-          note: contact.note
+          note: contact.note,
         });
-  
+
         // Endereços
         this.addresses.clear();
         contact.addresses.forEach((address) => {
+          console.log(address);
           this.addresses.push(
             this.fb.group({
               id: [address.id],
+              street: [address.street || ''],
               number: [address.number || ''],
               complement: [address.complement || ''],
               neighborhood: [address.neighborhood || ''],
               city: [address.city || ''],
               state: [address.state || ''],
               country: [address.country || ''],
-              postalCode: [address.postalCode || '']
+              postalCode: [address.postalCode || ''],
             })
           );
         });
-  
+
         // Telefones
         this.phones.clear();
         contact.phones.forEach((phone) => {
@@ -91,11 +91,11 @@ export class ContactFormComponent implements OnInit{
             this.fb.group({
               id: [phone.id],
               label: [phone.label || ''],
-              phoneNumber: [phone.phoneNumber || '', Validators.required]
+              phoneNumber: [phone.phoneNumber || '', Validators.required],
             })
           );
         });
-  
+
         // Emails
         this.emails.clear();
         contact.emails.forEach((email) => {
@@ -103,41 +103,41 @@ export class ContactFormComponent implements OnInit{
             this.fb.group({
               id: [email.id],
               label: [email.label || ''],
-              email: [email.email || '', [Validators.required, Validators.email]]
+              email: [
+                email.email || '',
+                [Validators.required, Validators.email],
+              ],
             })
           );
         });
-  
+
         // Categorias
         this.categories.clear();
         contact.categories.forEach((category) => {
           this.categories.push(
             this.fb.group({
               id: [category.id],
-              name: [category.name]
+              name: [category.name],
             })
           );
         });
-  
+
         // Grupos
         this.groups.clear();
         contact.groups.forEach((group) => {
           this.groups.push(
             this.fb.group({
               id: [group.id],
-              name: [group.name]
+              name: [group.name],
             })
           );
         });
       },
-      error: (err) => { 
+      error: (err) => {
         console.error('Erro ao buscar contato:', err);
-      }
+      },
     });
   }
-  
-  
-
 
   getCategoriesData() {
     this.categoryService
@@ -155,25 +155,28 @@ export class ContactFormComponent implements OnInit{
   createEmailField(): FormGroup {
     return this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      type: ['personal'],
+      label: [''],
     });
   }
 
   createPhoneField(): FormGroup {
     return this.fb.group({
-      number: ['', Validators.required],
-      type: ['mobile'],
+      id: [''],
+      phoneNumber: ['', Validators.required],
+      label: [''],
     });
   }
 
   createAddressField(): FormGroup {
     return this.fb.group({
+      number: [''],
+      complement: [''],
       street: [''],
       city: [''],
       state: [''],
-      zipCode: [''],
+      postalCode: [''],
       country: [''],
-      type: ['home'],
+      neighborhood: [''],
     });
   }
 
@@ -224,51 +227,57 @@ export class ContactFormComponent implements OnInit{
   }
 
   removeCategory(index: number): void {
-    this.selectedCategories.splice(index, 1);
+    this.categories.removeAt(index);
   }
-
 
   removeGroup(index: number): void {
-    this.selectedGroups.splice(index, 1);
+    this.groups.removeAt(index)
   }
 
-  isCategorySelected(cat: any) {
-  return this.contactForm.get('categories')?.value?.some((c: any) => c.id === cat.id);
-}
-
-isGroupSelected(grp: any) {
-  return this.contactForm.get('groups')?.value?.some((g: any) => g.id === grp.id);
-}
-
-openModal(templateRef: TemplateRef<any>) {
-  this.modalService.open(templateRef, { centered: true, size: 'sm' });
-}
-
-addCategory(modal: any) {
-  const categories = this.contactForm.get('categories')?.value || [];
-  if (this.selectedCategory && !this.isCategorySelected(this.selectedCategory)) {
-    categories.push(this.selectedCategory);
-    this.contactForm.get('categories')?.setValue(categories);
+  isCategorySelected(cat: Category) {
+    return this.contactForm
+      .get('categories')
+      ?.value?.some((c: Category) => c.id === cat.id);
   }
-  this.selectedCategory = '';
-  modal.close();
-}
 
-addGroup(modal: any) {
-  const groups = this.contactForm.get('groups')?.value || [];
-  if (this.selectedGroup && !this.isGroupSelected(this.selectedGroup)) {
-    groups.push(this.selectedGroup);
-    this.contactForm.get('groups')?.setValue(groups);
+  isGroupSelected(grp: Group) {
+    return this.contactForm
+      .get('groups')
+      ?.value?.some((g: Group) => g.id === grp.id);
   }
-  this.selectedGroup = '';
-  modal.close();
-}
+
+  openModal(templateRef: TemplateRef<any>) {
+    this.modalService.open(templateRef, { centered: true, size: 'sm' });
+  }
+
+  addCategory(modal: NgbActiveModal) {
+    const categoriesArray = this.contactForm.get('categories') as FormArray;
+    if (
+      this.selectedCategory &&
+      !this.isCategorySelected(this.selectedCategory)
+    ) {
+      categoriesArray.push(new FormControl(this.selectedCategory));
+      this.selectedCategory = {} as Category;
+      modal.close();
+    }
+  }
+
+  addGroup(modal: NgbActiveModal) {
+    const groupsArray = this.contactForm.get('groups') as FormArray;
+    if (this.selectedGroup && !this.isGroupSelected(this.selectedGroup)) {
+      groupsArray.push(new FormControl(this.selectedGroup));
+      this.selectedGroup = {} as Group;
+      modal.close();
+    }
+  }
 
   onSubmit(): void {
-      if(this.contactForm.valid){
-        const contact = this.contactForm.value;
-        console.log(this.contactForm.value)
-        this.contactService.createContact(contact).subscribe(() => this.router.navigate(['']))
-      }
+    if (this.contactForm.valid) {
+      const contact = this.contactForm.value;
+      console.log(this.contactForm.value);
+      this.contactService
+        .createContact(contact)
+        .subscribe(() => this.router.navigate(['']));
+    }
   }
 }
