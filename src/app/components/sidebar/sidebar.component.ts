@@ -1,9 +1,9 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { Category, CategoryData } from '../../models/Category';
+import { Component, OnInit, TemplateRef } from '@angular/core';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Category } from '../../models/Category';
 import { Group } from '../../models/Group';
 import { CategoryService } from '../../services/category.service';
 import { GroupService } from '../../services/group.service';
-import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SearchServiceService } from '../../services/search-service.service';
 
 @Component({
@@ -13,9 +13,6 @@ import { SearchServiceService } from '../../services/search-service.service';
   styleUrl: './sidebar.component.css',
 })
 export class SidebarComponent implements OnInit {
-  @ViewChild('modalCreateCategory') modalCreateCategory: any;
-  @ViewChild('modalCreateGroup') modalCreateGroup: any;
-
   newCategoryName = '';
   newGroupName = '';
 
@@ -31,7 +28,6 @@ export class SidebarComponent implements OnInit {
     private searchService: SearchServiceService
   ) {}
 
-
   categories: Category[] = [];
   groups: Group[] = [];
   isEditing: boolean = false;
@@ -42,7 +38,7 @@ export class SidebarComponent implements OnInit {
     this.isGroup = false;
     this.newCategoryName = '';
     this.newGroupName = '';
-    this.getCategoriesData()
+    this.getCategoriesData();
   }
 
   ngOnInit(): void {
@@ -70,94 +66,55 @@ export class SidebarComponent implements OnInit {
       .subscribe(() => this.getCategoriesData());
   }
 
-  // saveCategory(modal: NgbActiveModal) {
-  //   if (!this.newCategoryName) return;
-
-  //   if (!this.isEditingCategory) {
-  //     this.categoryService
-  //       .postCategory({ name: this.newCategoryName })
-  //       .subscribe(() => modal.close());
-  //   } else {
-  //     this.categoryService
-  //       .updateCategory(this.newCategoryObj)
-  //       .subscribe(() => this.getCategoriesData());
-  //   }
-  // }
-
-  // saveGroup(modal: NgbActiveModal) {
-  //   if (!this.newGroupName) return;
-
-  //   if (!this.isEditingGroup) {
-  //     this.groupService
-  //       .postGroup({ name: this.newGroupName })
-  //       .subscribe(() => modal.close());
-  //   } else {
-  //     this.groupService
-  //       .updateGroup(this.newGroupObj)
-  //       .subscribe(() => this.getGroupData());
-  //   }
-  // }
-
-  // openCategoryModal(templateRef: TemplateRef<any>, id?: number) {
-  //   console.log();
-  //   const modalRef = this.modalService.open(templateRef, {
-  //     centered: true,
-  //     size: 'sm',
-  //   });
-  //   if (id) {
-  //     this.categoryService.getCategoryById(id).subscribe((data) => {
-  //       this.newCategoryObj = data;
-  //       this.newCategoryName= data.name
-  //       this.isEditingCategory = true;
-  //     });
-  //   }
-
-  //   modalRef.result.finally(() => {
-  //     this.resetData();
-  //   });
-  // }
-
-  // openGroupModal(templateRef: TemplateRef<any>, id?: number) {
-  //   const modalRef = this.modalService.open(templateRef, {
-  //     centered: true,
-  //     size: 'sm',
-  //   });
-  //   if (id) {
-  //     this.groupService.getGroupById(id).subscribe((data) => {
-  //       this.newGroupObj = data;
-  //       this.newGroupName = data.name
-  //       this.isEditingGroup = true;
-  //     });
-  //   }
-
-  //   modalRef.result.finally(() => {
-  //     this.resetData();
-  //   });
-  // }
-  openCategoryModal(category?: Category): void {
+  openCategoryModal(templateRef: TemplateRef<any>, category?: Category): void {
     this.editingCategory = !!category;
     this.currentCategoryId = category?.id || null;
     this.newCategoryName = category?.name || '';
 
-    this.modalService.open(this.modalCreateCategory);
+    this.modalService.open(templateRef, {
+      centered: true,
+      size: 'sm',
+    });
   }
 
   // Abrir modal de grupo (novo ou edição)
-  openGroupModal(group?: Group): void {
+  openGroupModal(templateRef: TemplateRef<any>, group?: Group): void {
     this.editingGroup = !!group;
     this.currentGroupId = group?.id || null;
     this.newGroupName = group?.name || '';
 
-    this.modalService.open(this.modalCreateGroup);
+    this.modalService.open(templateRef, {
+      centered: true,
+      size: 'sm',
+    });
+  }
+
+  validFieldName(term: string): boolean {
+    if (term.trim() === '') return false;
+    return true;
   }
 
   // Salvar ou editar categoria
   saveCategory(modal: NgbActiveModal): void {
+    if (!this.validFieldName(this.newCategoryName)) return;
     if (this.editingCategory && this.currentCategoryId !== null) {
-      this.categoryService.postCategory({id: this.currentCategoryId, name: this.newCategoryName}).subscribe(() => modal.close())
+      //Editar
+      this.categoryService
+        .updateCategory({
+          id: this.currentCategoryId,
+          name: this.newCategoryName,
+        })
+        .subscribe(() => {
+          this.getCategoriesData();
+          modal.close();
+        });
     } else {
-      // Lógica para criar nova categoria
-      console.log('Criando nova categoria:', this.newCategoryName);
+      // Criar
+      this.categoryService
+        .postCategory({ name: this.newCategoryName })
+        .subscribe(() => {
+          this.getCategoriesData(), modal.close();
+        });
     }
 
     modal.close();
@@ -165,13 +122,26 @@ export class SidebarComponent implements OnInit {
   }
 
   // Salvar ou editar grupo
-  saveGroup(modal: any): void {
+  saveGroup(modal: NgbActiveModal): void {
+    if (!this.validFieldName(this.newGroupName)) return;
+
     if (this.editingGroup && this.currentGroupId !== null) {
-      // Lógica para editar grupo
-      console.log('Editando grupo:', this.currentGroupId, this.newGroupName);
+      //Editar
+      this.groupService
+        .updateGroup({ id: this.currentGroupId, name: this.newGroupName })
+        .subscribe(() => {
+          this.getGroupData(), modal.close();
+        });
     } else {
-      // Lógica para criar novo grupo
-      console.log('Criando novo grupo:', this.newGroupName);
+      //Crar
+      this.groupService
+        .postGroup({
+          name: this.newGroupName,
+        })
+        .subscribe(() => {
+          this.getGroupData();
+          modal.close();
+        });
     }
 
     modal.close();
@@ -190,7 +160,7 @@ export class SidebarComponent implements OnInit {
     this.editingGroup = false;
     this.currentGroupId = null;
   }
-  
+
   //pesquisas
   onSelectCategory(category: Category) {
     const categoryName = category ? category.name : null;

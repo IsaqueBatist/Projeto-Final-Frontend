@@ -27,11 +27,7 @@
       <i class="bi bi-bookmark"></i>
       <span>Categories</span>
     </div>
-    <a
-      href="#"
-      class="text-white"
-      (click)="openCategoryModal()"
-    >
+    <a href="#" class="text-white" (click)="openCategoryModal(modalCategory)">
       <i class="bi bi-plus-circle"></i>
     </a>
   </div>
@@ -39,13 +35,17 @@
   <ul class="list-unstyled ps-4 d-flex flex-column gap-2">
     <li *ngFor="let category of categories" class="sidebar-item">
       <div class="d-flex justify-content-between align-items-center">
-        <a href="#" class="text-white text-decoration-none py-1 flex-grow-1" (click)="onSelectCategory(category)">
+        <a
+          href="#"
+          class="text-white text-decoration-none py-1 flex-grow-1"
+          (click)="onSelectCategory(category)"
+        >
           {{ category.name }}
         </a>
         <div class="sidebar-actions">
           <i
             class="bi bi-pencil text-white me-2 cursor-pointer"
-            (click)="openCategoryModal(category)"
+            (click)="openCategoryModal(modalCategory, category)"
           ></i>
           <i
             class="bi bi-trash text-danger cursor-pointer"
@@ -62,11 +62,7 @@
       <i class="bi bi-people"></i>
       <span>Grupos</span>
     </div>
-    <a
-      href="#"
-      class="text-white"
-      (click)="openGroupModal()"
-    >
+    <a href="#" class="text-white" (click)="openGroupModal(modalGroup)">
       <i class="bi bi-plus-circle"></i>
     </a>
   </div>
@@ -74,13 +70,17 @@
   <ul class="list-unstyled ps-4 d-flex flex-column gap-2">
     <li *ngFor="let group of groups" class="sidebar-item">
       <div class="d-flex justify-content-between align-items-center">
-        <a href="#" class="text-white text-decoration-none py-1 flex-grow-1" (click)="onSelectGroup(group)">
+        <a
+          href="#"
+          class="text-white text-decoration-none py-1 flex-grow-1"
+          (click)="onSelectGroup(group)"
+        >
           {{ group.name }}
         </a>
         <div class="sidebar-actions">
           <i
             class="bi bi-pencil text-white me-2 cursor-pointer"
-            (click)="openGroupModal(group)"
+            (click)="openGroupModal(modalGroup, group)"
           ></i>
           <i
             class="bi bi-trash text-danger cursor-pointer"
@@ -92,15 +92,20 @@
   </ul>
 </div>
 
-<ng-template #modalCreateCategory let-modal>
+<ng-template #modalCategory let-modal>
   <div class="modal-header">
     <h5 class="modal-title">
-      {{ editingCategory ? 'Edit Category' : 'Create Category' }}
+      {{ editingCategory ? "Edit Category" : "Create Category" }}
     </h5>
     <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
   </div>
   <div class="modal-body">
-    <input type="text" class="form-control" [(ngModel)]="newCategoryName" placeholder="Category name" />
+    <input
+      type="text"
+      class="form-control"
+      [(ngModel)]="newCategoryName"
+      placeholder="Category name"
+    />
   </div>
   <div class="modal-footer">
     <button class="btn btn-secondary" (click)="modal.close()">Cancel</button>
@@ -108,15 +113,20 @@
   </div>
 </ng-template>
 
-<ng-template #modalCreateGroup let-modal>
+<ng-template #modalGroup let-modal>
   <div class="modal-header">
     <h5 class="modal-title">
-      {{ editingGroup ? 'Edit Group' : 'Create Group' }}
+      {{ editingGroup ? "Edit Group" : "Create Group" }}
     </h5>
     <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
   </div>
   <div class="modal-body">
-    <input type="text" class="form-control" [(ngModel)]="newGroupName" placeholder="Group name" />
+    <input
+      type="text"
+      class="form-control"
+      [(ngModel)]="newGroupName"
+      placeholder="Group name"
+    />
   </div>
   <div class="modal-footer">
     <button class="btn btn-secondary" (click)="modal.close()">Cancel</button>
