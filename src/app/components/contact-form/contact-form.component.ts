@@ -1,10 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CategoryService } from '../../services/category.service';
 import { GroupService } from '../../services/group.service';
 import { Category } from '../../models/Category';
 import { Group } from '../../models/Group';
 import { SearchServiceService } from '../../services/search-service.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ContactService } from '../../services/contact.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-contact-form',
@@ -18,11 +21,17 @@ export class ContactFormComponent implements OnInit{
   selectedGroups: Group[] = [];
   newCategory = '';
   newGroup = '';
-
+  selectedGroup: string = '';
+  selectedCategory: string = ''
+  
   constructor(
     private fb: FormBuilder,
     private categoryService: CategoryService,
-    private groupService: GroupService
+    private contactService: ContactService,
+    private groupService: GroupService,
+    private modalService: NgbModal,
+    private router: Router,
+    private activedRoute: ActivatedRoute
   ) {
     this.contactForm = this.fb.group({
       firstname: ['', Validators.required],
@@ -35,15 +44,99 @@ export class ContactFormComponent implements OnInit{
       groups: this.fb.array([]),
       categories: this.fb.array([]),
       note: [''],
-      photo: [''],
     });
   }
   ngOnInit(): void {
-
-
+    let contactId =  Number(this.activedRoute.snapshot.paramMap.get('id'));
+    if (contactId !=0) {
+      this.setContactById(contactId);
+    }
     this.getCategoriesData()
     this.getGroupData()
   }
+
+  setContactById(id: number) {
+    this.contactService.getContactById(id).subscribe({
+      next: (contact) => {
+        this.contactForm.patchValue({
+          id: contact.id,
+          firstname: contact.firstname,
+          lastname: contact.lastname,
+          birthDate: contact.birthDate,
+          isFavorite: contact.isFavorite,
+          note: contact.note
+        });
+  
+        // Endereços
+        this.addresses.clear();
+        contact.addresses.forEach((address) => {
+          this.addresses.push(
+            this.fb.group({
+              id: [address.id],
+              number: [address.number || ''],
+              complement: [address.complement || ''],
+              neighborhood: [address.neighborhood || ''],
+              city: [address.city || ''],
+              state: [address.state || ''],
+              country: [address.country || ''],
+              postalCode: [address.postalCode || '']
+            })
+          );
+        });
+  
+        // Telefones
+        this.phones.clear();
+        contact.phones.forEach((phone) => {
+          this.phones.push(
+            this.fb.group({
+              id: [phone.id],
+              label: [phone.label || ''],
+              phoneNumber: [phone.phoneNumber || '', Validators.required]
+            })
+          );
+        });
+  
+        // Emails
+        this.emails.clear();
+        contact.emails.forEach((email) => {
+          this.emails.push(
+            this.fb.group({
+              id: [email.id],
+              label: [email.label || ''],
+              email: [email.email || '', [Validators.required, Validators.email]]
+            })
+          );
+        });
+  
+        // Categorias
+        this.categories.clear();
+        contact.categories.forEach((category) => {
+          this.categories.push(
+            this.fb.group({
+              id: [category.id],
+              name: [category.name]
+            })
+          );
+        });
+  
+        // Grupos
+        this.groups.clear();
+        contact.groups.forEach((group) => {
+          this.groups.push(
+            this.fb.group({
+              id: [group.id],
+              name: [group.name]
+            })
+          );
+        });
+      },
+      error: (err) => { 
+        console.error('Erro ao buscar contato:', err);
+      }
+    });
+  }
+  
+  
 
 
   getCategoriesData() {
@@ -130,36 +223,52 @@ export class ContactFormComponent implements OnInit{
     this.addresses.removeAt(index);
   }
 
-  addCategory(): void {
-    if (this.newCategory.trim()) {
-      this.selectedCategories.push({
-        id: Date.now(), // ID temporário
-        name: this.newCategory.trim(),
-      });
-      this.newCategory = '';
-    }
-  }
-
   removeCategory(index: number): void {
     this.selectedCategories.splice(index, 1);
   }
 
-  addGroup(): void {
-    if (this.newGroup.trim()) {
-      this.selectedGroups.push({
-        id: Date.now(), // ID temporário
-        name: this.newGroup.trim(),
-      });
-      this.newGroup = '';
-    }
-  }
 
   removeGroup(index: number): void {
     this.selectedGroups.splice(index, 1);
   }
 
+  isCategorySelected(cat: any) {
+  return this.contactForm.get('categories')?.value?.some((c: any) => c.id === cat.id);
+}
+
+isGroupSelected(grp: any) {
+  return this.contactForm.get('groups')?.value?.some((g: any) => g.id === grp.id);
+}
+
+openModal(templateRef: TemplateRef<any>) {
+  this.modalService.open(templateRef, { centered: true, size: 'sm' });
+}
+
+addCategory(modal: any) {
+  const categories = this.contactForm.get('categories')?.value || [];
+  if (this.selectedCategory && !this.isCategorySelected(this.selectedCategory)) {
+    categories.push(this.selectedCategory);
+    this.contactForm.get('categories')?.setValue(categories);
+  }
+  this.selectedCategory = '';
+  modal.close();
+}
+
+addGroup(modal: any) {
+  const groups = this.contactForm.get('groups')?.value || [];
+  if (this.selectedGroup && !this.isGroupSelected(this.selectedGroup)) {
+    groups.push(this.selectedGroup);
+    this.contactForm.get('groups')?.setValue(groups);
+  }
+  this.selectedGroup = '';
+  modal.close();
+}
+
   onSubmit(): void {
-      console.log(this.contactForm.value);
-      // Salvar contato
+      if(this.contactForm.valid){
+        const contact = this.contactForm.value;
+        console.log(this.contactForm.value)
+        this.contactService.createContact(contact).subscribe(() => this.router.navigate(['']))
+      }
   }
 }

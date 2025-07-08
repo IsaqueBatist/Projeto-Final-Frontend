@@ -1,375 +1,215 @@
-<div class="container-fluid mt-4">
-  <div class="row d-flex justify-content-center align-items-center">
-    <!-- Formulário -->
-    <div class="col-md-9">
-      <div class="card border-0 shadow-sm">
-        <div class="card-header bg-light border-bottom">
-          <h5 class="mb-0">Novo Contato</h5>
-        </div>
-        <div class="card-body">
-          <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
-            <div class="row g-3">
-              <!-- Foto e Info Básica -->
-              <div class="col-md-3">
-                <div class="d-flex flex-column align-items-center">
-                  <div class="avatar-upload mb-3">
-                    <div
-                      class="avatar-preview rounded-circle bg-light d-flex justify-content-center align-items-center"
-                      style="width: 120px; height: 120px"
-                    >
-                      <img
-                        *ngIf="contactForm.get('photo')?.value"
-                        [src]="contactForm.get('photo')?.value"
-                        class="img-fluid rounded-circle"
-                      />
-                      <i
-                        *ngIf="!contactForm.get('photo')?.value"
-                        class="bi bi-person-fill text-muted"
-                        style="font-size: 5rem"
-                      ></i>
-                    </div>
-                    <input type="file" id="photo" class="d-none" />
-                    <label
-                      for="photo"
-                      class="btn btn-sm btn-outline-primary mt-2"
-                      >Adicionar Foto</label
-                    >
-                  </div>
-                  <div class="form-check form-switch">
-                    <input
-                      class="form-check-input"
-                      type="checkbox"
-                      id="isFavorite"
-                      formControlName="isFavorite"
-                    />
-                    <label class="form-check-label" for="isFavorite"
-                      >Favorito</label
-                    >
-                  </div>
-                </div>
-              </div>
+<form [formGroup]="contactForm" class="container-fluid m-auto my-3 w-100" style="max-width: 70rem">
 
-              <div class="col-md-9">
-                <div class="row g-3">
-                  <div class="col-md-6">
-                    <label for="firstname" class="form-label">Nome</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="firstname"
-                      formControlName="firstname"
-                      required
-                    />
-                  </div>
-                  <div class="col-md-6">
-                    <label for="lastname" class="form-label">Sobrenome</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="lastname"
-                      formControlName="lastname"
-                      required
-                    />
-                  </div>
-                  <div class="col-md-6">
-                    <label for="birthDate" class="form-label"
-                      >Data de Nascimento</label
-                    >
-                    <input
-                      type="date"
-                      class="form-control"
-                      id="birthDate"
-                      formControlName="birthDate"
-                    />
-                  </div>
-                </div>
-              </div>
+  <!-- Cabeçalho -->
+  <div class="row mb-3 align-items-center">
+    <div class="col-6">
+      <a class="text-primary" routerLink="">
+        <i class="bi bi-arrow-left fs-4"></i>
+      </a>
+    </div>
+    <div class="col-6 text-end">
+      <button type="submit" class="btn btn-primary" (click)="onSubmit()">Salvar</button>
+    </div>
+  </div>
 
-              <!-- E-mails -->
-              <div class="col-12">
-                <div
-                  class="d-flex justify-content-between align-items-center mb-2"
-                >
-                  <h6 class="mb-0">E-mails</h6>
-                  <button
-                    type="button"
-                    class="btn btn-sm btn-outline-success"
-                    (click)="addEmail()"
-                  >
-                    <i class="bi bi-plus"></i> Adicionar
-                  </button>
-                </div>
-                <div formArrayName="emails">
-                  <div
-                    *ngFor="let email of emails.controls; let i = index"
-                    [formGroupName]="i"
-                    class="row g-2 mb-2"
-                  >
-                    <div class="col-md-8">
-                      <input
-                        type="email"
-                        class="form-control"
-                        placeholder="E-mail"
-                        formControlName="email"
-                      />
-                    </div>
-                    <div class="col-md-3">
-                      <input
-                        class="form-control"
-                        type="Text"
-                        placeholder="label"
-                        formControlName="type"
-                      />
-                    </div>
-                    <div class="col-md-1">
-                      <button
-                        type="button"
-                        class="btn btn-sm btn-outline-danger"
-                        (click)="removeEmail(i)"
-                      >
-                        <i class="bi bi-trash"></i>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
+  <!-- Nome e Sobrenome -->
+  <div class="row g-2 mb-3">
+    <div class="col-12 col-md-6">
+      <label class="form-label">Nome</label>
+      <input formControlName="firstname" type="text" class="form-control" placeholder="Nome" />
+    </div>
+    <div class="col-12 col-md-6">
+      <label class="form-label">Sobrenome</label>
+      <input formControlName="lastname" type="text" class="form-control" placeholder="Sobrenome" />
+    </div>
+  </div>
 
-              <!-- Telefones -->
-              <div class="col-12">
-                <div
-                  class="d-flex justify-content-between align-items-center mb-2"
-                >
-                  <h6 class="mb-0">Telefones</h6>
-                  <button
-                    type="button"
-                    class="btn btn-sm btn-outline-success"
-                    (click)="addPhone()"
-                  >
-                    <i class="bi bi-plus"></i> Adicionar
-                  </button>
-                </div>
-                <div formArrayName="phones">
-                  <div
-                    *ngFor="let phone of phones.controls; let i = index"
-                    [formGroupName]="i"
-                    class="row g-2 mb-2"
-                  >
-                    <div class="col-md-8">
-                      <input
-                        type="tel"
-                        class="form-control"
-                        placeholder="Número"
-                        formControlName="number"
-                      />
-                    </div>
-                    <div class="col-md-3">
-                      <input
-                        class="form-control"
-                        formControlName="type"
-                        type="text"
-                        placeholder="label"
-                      />
-                    </div>
-                    <div class="col-md-1">
-                      <button
-                        type="button"
-                        class="btn btn-sm btn-outline-danger"
-                        (click)="removePhone(i)"
-                      >
-                        <i class="bi bi-trash"></i>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Endereços -->
-              <div class="col-12">
-                <div
-                  class="d-flex justify-content-between align-items-center mb-2"
-                >
-                  <h6 class="mb-0">Endereços</h6>
-                  <button
-                    type="button"
-                    class="btn btn-sm btn-outline-success"
-                    (click)="addAddress()"
-                  >
-                    <i class="bi bi-plus"></i> Adicionar
-                  </button>
-                </div>
-                <div formArrayName="addresses">
-                  <div
-                    *ngFor="let address of addresses.controls; let i = index"
-                    [formGroupName]="i"
-                    class="mb-3 p-3 border rounded"
-                  >
-                    <div class="row g-2">
-                      <div class="col-md-6">
-                        <input
-                          type="text"
-                          class="form-control"
-                          placeholder="Rua"
-                          formControlName="street"
-                        />
-                      </div>
-                      <div class="col-md-6">
-                        <input
-                          type="text"
-                          class="form-control"
-                          placeholder="Cidade"
-                          formControlName="city"
-                        />
-                      </div>
-                      <div class="col-md-4">
-                        <input
-                          type="text"
-                          class="form-control"
-                          placeholder="Estado"
-                          formControlName="state"
-                        />
-                      </div>
-                      <div class="col-md-3">
-                        <input
-                          type="text"
-                          class="form-control"
-                          placeholder="CEP"
-                          formControlName="zipCode"
-                        />
-                      </div>
-                      <div class="col-md-4">
-                        <input
-                          type="text"
-                          class="form-control"
-                          placeholder="País"
-                          formControlName="country"
-                        />
-                      </div>
-                      <div class="col-md-1">
-                        <button
-                          type="button"
-                          class="btn btn-sm btn-outline-danger"
-                          (click)="removeAddress(i)"
-                        >
-                          <i class="bi bi-trash"></i>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Categorias -->
-              <div class="col-md-6">
-                <label class="form-label">Categorias</label>
-                <div class="border rounded p-3">
-                  <!-- Badges das categorias selecionadas -->
-                  <div class="d-flex flex-wrap gap-2 mb-3">
-                    <!-- <ng-container
-                      *ngFor="let category of categories; let i = index"
-                    >
-                      <span class="badge bg-primary d-flex align-items-center">
-                        {{ category.name }}
-                        <button
-                          type="button"
-                          class="btn-close btn-close-white ms-2"
-                          (click)="removeCategory(i)"
-                          aria-label="Remover"
-                        ></button>
-                      </span>
-                    </ng-container> -->
-                  </div>
-
-                  <!-- Input para adicionar nova categoria -->
-                  <div class="input-group">
-                    <input
-                      type="text"
-                      class="form-control"
-                      placeholder="Nova categoria"
-                      [(ngModel)]="newCategory"
-                      [ngModelOptions]="{ standalone: true }"
-                    />
-                    <button
-                      class="btn btn-outline-primary"
-                      type="button"
-                      (click)="addCategory()"
-                    >
-                      <i class="bi bi-plus"></i> Adicionar
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Grupos -->
-              <div class="col-md-6">
-                <label class="form-label">Grupos</label>
-                <div class="border rounded p-3">
-                  <!-- Badges dos grupos selecionados -->
-                  <div class="d-flex flex-wrap gap-2 mb-3">
-                    <!-- <ng-container
-                      *ngFor="let group of groups; let i = index"
-                    >
-                      <span class="badge bg-success d-flex align-items-center">
-                        {{ group.name }}
-                        <button
-                          type="button"
-                          class="btn-close btn-close-white ms-2"
-                          (click)="removeGroup(i)"
-                          aria-label="Remover"
-                        ></button>
-                      </span>
-                    </ng-container> -->
-                  </div>
-
-                  <!-- Input para adicionar novo grupo -->
-                  <div class="input-group">
-                    <input
-                      type="text"
-                      class="form-control"
-                      placeholder="Novo grupo"
-                      [(ngModel)]="newGroup"
-                      [ngModelOptions]="{ standalone: true }"
-                    />
-                    <button
-                      class="btn btn-outline-success"
-                      type="button"
-                      (click)="addGroup()"
-                    >
-                      <i class="bi bi-plus"></i> Adicionar
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Notas -->
-              <div class="col-12">
-                <label for="note" class="form-label">Notas</label>
-                <textarea
-                  class="form-control"
-                  id="note"
-                  rows="3"
-                  formControlName="note"
-                ></textarea>
-              </div>
-
-              <!-- Botões de ação -->
-              <div class="col-12">
-                <div class="d-flex justify-content-end gap-2">
-                  <button type="button" class="btn btn-outline-secondary">
-                    Cancelar
-                  </button>
-                  <button
-                    type="submit"
-                    class="btn btn-primary"
-                    (click)="onSubmit()"
-                  >
-                    Salvar
-                  </button>
-                </div>
-              </div>
-            </div>
-          </form>
-        </div>
+  <!-- Apelido e Favorito -->
+  <div class="row g-2 mb-3">
+    <div class="col-12 col-md-6">
+      <label class="form-label">Apelido</label>
+      <input formControlName="nickname" type="text" class="form-control" placeholder="Apelido" />
+    </div>
+    <div class="col-12 col-md-6 d-flex align-items-end">
+      <div class="form-check form-switch">
+        <input formControlName="isFavorite" type="checkbox" class="form-check-input" />
+        <label class="form-check-label">Favorito</label>
       </div>
     </div>
   </div>
-</div>
+
+  <!-- Data de Nascimento -->
+  <div class="mb-3">
+    <label class="form-label">Data de Nascimento</label>
+    <input formControlName="birthDate" type="date" class="form-control" />
+  </div>
+
+  <!-- E-mails -->
+  <div formArrayName="emails" class="mb-3">
+    <label class="form-label">E-mails</label>
+    <div
+      *ngFor="let email of emails.controls; let i = index"
+      [formGroupName]="i"
+      class="row g-2 mb-2"
+    >
+      <div class="col-12 col-md-4">
+        <input formControlName="type" class="form-control" placeholder="Label" />
+      </div>
+      <div class="col-10 col-md-7">
+        <input formControlName="email" type="email" class="form-control" placeholder="email@exemplo.com" />
+      </div>
+      <div class="col-2 d-flex align-items-center">
+        <i class="bi bi-x ms-2" style="cursor: pointer" (click)="removeEmail(i)"></i>
+      </div>
+    </div>
+    <button type="button" class="btn btn-outline-primary btn-sm" (click)="addEmail()">+ Adicionar E-mail</button>
+  </div>
+
+  <!-- Telefones -->
+  <div formArrayName="phones" class="mb-3">
+    <label class="form-label">Telefones</label>
+    <div
+      *ngFor="let phone of phones.controls; let i = index"
+      [formGroupName]="i"
+      class="row g-2 mb-2"
+    >
+      <div class="col-12 col-md-4">
+        <input formControlName="type" class="form-control" placeholder="Label" />
+      </div>
+      <div class="col-10 col-md-7">
+        <input formControlName="number" type="tel" class="form-control" placeholder="(00) 00000-0000" />
+      </div>
+      <div class="col-2 d-flex align-items-center">
+        <i class="bi bi-x ms-2" style="cursor: pointer" (click)="removePhone(i)"></i>
+      </div>
+    </div>
+    <button type="button" class="btn btn-outline-primary btn-sm" (click)="addPhone()">+ Adicionar Telefone</button>
+  </div>
+
+  <!-- Endereços -->
+  <div formArrayName="addresses" class="mb-3">
+    <label class="form-label">Endereços</label>
+    <div
+      *ngFor="let address of addresses.controls; let i = index"
+      [formGroupName]="i"
+      class="border p-3 rounded mb-3"
+    >
+      <div class="d-flex justify-content-end">
+        <i class="bi bi-x" style="cursor: pointer" (click)="removeAddress(i)"></i>
+      </div>
+      <input formControlName="country" class="form-control mb-2" placeholder="País" />
+      <div class="row g-2 mb-2">
+        <div class="col-12 col-md-10">
+          <input formControlName="street" class="form-control" placeholder="Rua" />
+        </div>
+        <div class="col-12 col-md-2">
+          <input formControlName="number" class="form-control" placeholder="Número" />
+        </div>
+      </div>
+      <div class="row g-2 mb-2">
+        <div class="col-12 col-md-6">
+          <input formControlName="city" class="form-control" placeholder="Cidade" />
+        </div>
+        <div class="col-12 col-md-3">
+          <input formControlName="state" class="form-control" placeholder="Estado" />
+        </div>
+        <div class="col-12 col-md-3">
+          <input formControlName="zipCode" class="form-control" placeholder="CEP" />
+        </div>
+      </div>
+      <input formControlName="neighborhood" class="form-control mb-2" placeholder="Bairro" />
+      <input formControlName="complement" class="form-control mb-2" placeholder="Complemento" />
+    </div>
+    <button type="button" class="btn btn-outline-primary btn-sm" (click)="addAddress()">+ Adicionar Endereço</button>
+  </div>
+
+  <!-- Categorias -->
+  <div class="mb-3">
+    <label class="form-label">Categorias</label>
+    <div class="d-flex flex-wrap gap-2 mb-2">
+      <div
+        *ngFor="let category of categories.value"
+        class="badge bg-light border text-secondary d-flex align-items-center px-2 py-1 rounded-pill"
+      >
+        {{ category.name }}
+        <i class="bi bi-x ms-2" style="cursor: pointer" (click)="removeCategory(category)"></i>
+      </div>
+      <i class="bi bi-plus-lg" (click)="openModal(modalAddCategory)" style="cursor: pointer"></i>
+    </div>
+  </div>
+
+  
+
+  <!-- Grupos -->
+  <div class="mb-3">
+    <label class="form-label">Grupos</label>
+    <div class="d-flex flex-wrap gap-2 mb-2">
+      <div
+        *ngFor="let group of groups.value"
+        class="badge bg-light border text-secondary d-flex align-items-center px-2 py-1 rounded-pill"
+      >
+        {{ group.name }}
+        <i class="bi bi-x ms-2" style="cursor: pointer" (click)="removeGroup(group)"></i>
+      </div>
+    </div>
+    <i class="bi bi-plus-lg" (click)="openModal(modalAddGroup)" style="cursor: pointer"></i>
+  </div>
+
+  <!-- Notas -->
+  <div class="mb-3">
+    <label class="form-label">Notas</label>
+    <textarea formControlName="note" class="form-control" rows="3"></textarea>
+  </div>
+</form>
+
+<ng-template #modalAddCategory let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Adicionar Categoria</h5>
+    <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    <select
+      class="form-select"
+      [(ngModel)]="selectedCategory"
+      aria-label="Selecione uma categoria"
+    >
+      <option
+        *ngFor="let categorie of selectedCategories"
+        [ngValue]="categorie"
+        [disabled]="isCategorySelected(categorie)"
+      >
+        {{ categorie.name }}
+      </option>
+    </select>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-secondary" (click)="modal.close()">Cancelar</button>
+    <button class="btn btn-primary" (click)="addCategory(modal)">Salvar</button>
+  </div>
+</ng-template>
+
+<ng-template #modalAddGroup let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Adicionar Grupo</h5>
+    <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    <select
+      class="form-select"
+      [(ngModel)]="selectedGroup"
+      aria-label="Selecione um grupo"
+    >
+      <option
+        *ngFor="let group of selectedGroups"
+        [ngValue]="group"
+        [disabled]="isGroupSelected(group)"
+      >
+        {{ group.name }}
+      </option>
+    </select>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-secondary" (click)="modal.close()">Cancelar</button>
+    <button class="btn btn-success" (click)="addGroup(modal)">Salvar</button>
+  </div>
+</ng-template>

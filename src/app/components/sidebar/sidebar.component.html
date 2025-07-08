@@ -30,7 +30,7 @@
     <a
       href="#"
       class="text-white"
-      (click)="openCategoryModal(modalCreateCategory)"
+      (click)="openCategoryModal()"
     >
       <i class="bi bi-plus-circle"></i>
     </a>
@@ -45,7 +45,7 @@
         <div class="sidebar-actions">
           <i
             class="bi bi-pencil text-white me-2 cursor-pointer"
-            (click)="openCategoryModal(modalCreateCategory, category.id)"
+            (click)="openCategoryModal(category)"
           ></i>
           <i
             class="bi bi-trash text-danger cursor-pointer"
@@ -65,7 +65,7 @@
     <a
       href="#"
       class="text-white"
-      (click)="openCategoryModal(modalCreateGroup)"
+      (click)="openGroupModal()"
     >
       <i class="bi bi-plus-circle"></i>
     </a>
@@ -80,7 +80,7 @@
         <div class="sidebar-actions">
           <i
             class="bi bi-pencil text-white me-2 cursor-pointer"
-            (click)="openCategoryModal(modalCreateGroup, group.id)"
+            (click)="openGroupModal(group)"
           ></i>
           <i
             class="bi bi-trash text-danger cursor-pointer"
@@ -94,16 +94,13 @@
 
 <ng-template #modalCreateCategory let-modal>
   <div class="modal-header">
-    <h5 class="modal-title">Create category</h5>
+    <h5 class="modal-title">
+      {{ editingCategory ? 'Edit Category' : 'Create Category' }}
+    </h5>
     <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
   </div>
   <div class="modal-body">
-    <input
-      type="text"
-      class="form-control"
-      [(ngModel)]="newCategoryName"
-      placeholder="Category name"
-    />
+    <input type="text" class="form-control" [(ngModel)]="newCategoryName" placeholder="Category name" />
   </div>
   <div class="modal-footer">
     <button class="btn btn-secondary" (click)="modal.close()">Cancel</button>
@@ -113,16 +110,13 @@
 
 <ng-template #modalCreateGroup let-modal>
   <div class="modal-header">
-    <h5 class="modal-title">Create Group</h5>
+    <h5 class="modal-title">
+      {{ editingGroup ? 'Edit Group' : 'Create Group' }}
+    </h5>
     <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
   </div>
   <div class="modal-body">
-    <input
-      type="text"
-      class="form-control"
-      [(ngModel)]="newGroupName"
-      placeholder="Group name"
-    />
+    <input type="text" class="form-control" [(ngModel)]="newGroupName" placeholder="Group name" />
   </div>
   <div class="modal-footer">
     <button class="btn btn-secondary" (click)="modal.close()">Cancel</button>

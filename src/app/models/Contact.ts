@@ -3,7 +3,6 @@ import { Category } from './Category';
 import { Email } from './Email';
 import { Group } from './Group';
 import { Phone } from './Phone';
-import { Photo } from './Photo';
 
 export interface Contact {
   id: number;
@@ -17,5 +16,4 @@ export interface Contact {
   groups: Group[];
   categories: Category[];
   note: string;
-  photo: Photo | null;
 }
