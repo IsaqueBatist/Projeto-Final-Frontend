@@ -26,25 +26,34 @@
 
     <!-- Grid de Contatos -->
     <div class="row g-3">
-      <div class="col-md-4">
+      <div class="col-md-4" *ngFor="let contact of contacts">
         <div class="contact-card bg-white position-relative overflow-hidden">
           <div
             class="card-actions position-absolute top-0 end-0 p-2 actions-hidden"
           >
             <i class="bi bi-pencil text-primary me-2 cursor-pointer fs-5"></i>
-            <i class="bi bi-trash text-danger cursor-pointer fs-5"></i>
+            <i
+              class="bi bi-trash text-danger cursor-pointer fs-5"
+              (click)="deleteContact(contact.id)"
+            ></i>
           </div>
           <div class="d-flex align-items-center mb-2">
-            <div class="avatar-circle bg-primary me-2">GP</div>
+            <div class="avatar-circle bg-primary me-2">
+              DP
+            </div>
             <div>
-              <strong>Gary Powell</strong><br />
-              <small class="text-muted">Marketing</small>
+              <strong>{{ contact.firstname + " " + contact.lastname }} </strong
+              ><br />
+              <small class="text-muted">{{ contact.groups[0]?.name }}</small>
             </div>
           </div>
           <div class="text-muted small">
-            <div><i class="bi bi-telephone"></i> 222-555-333</div>
             <div>
-              <i class="bi bi-envelope"></i> gary&#64;siebencosmetics.com
+              <i class="bi bi-telephone"></i>
+              {{ contact.phones[0].phoneNumber }}
+            </div>
+            <div>
+              <i class="bi bi-envelope"></i> {{ contact.emails[0].email }}
             </div>
           </div>
         </div>

@@ -7,7 +7,7 @@ import { Photo } from '../models/Photo';
   providedIn: 'root',
 })
 export class PhotoService {
-  private apiUrl = 'localhost:8080/photos';
+  private apiUrl = 'http://localhost:8080/photos';
 
   constructor(private http: HttpClient) {}
 
