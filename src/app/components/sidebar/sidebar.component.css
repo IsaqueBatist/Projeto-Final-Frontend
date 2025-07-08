@@ -1,0 +1,26 @@
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  gap: 2px;
+  width: 250px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #343a40;
+  padding-top: 1rem;
+}
+.sidebar a {
+  color: #fff;
+  text-decoration: none;
+  padding: 0.75rem 1rem;
+  display: block;
+}
+.sidebar a:hover {
+  background-color: #495057;
+}
+.content {
+  margin-left: 250px;
+  padding: 2rem;
+}
