@@ -1,3 +1,12 @@
 body {
   font-family: "Segoe UI", sans-serif;
 }
+
+.unselectable {
+  user-select: none; /* Impede seleção de texto */
+  -webkit-user-select: none; /* Para navegadores WebKit */
+  -moz-user-select: none; /* Para Firefox */
+  -ms-user-select: none; /* Para IE/Edge */
+  cursor: default; /* Remove o cursor de pointer */
+  outline: none !important; /* Remove o contorno de foco */
+}

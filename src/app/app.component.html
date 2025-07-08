@@ -1,8 +1,9 @@
-<div class="d-flex">
+<div class="d-flex vh-100">
   <app-sidebar></app-sidebar>
-  <div class="d-flex flex-column flex-grow-1">
+  <div class="d-flex flex-column flex-grow-1 overflow-hidden">
     <app-navbar></app-navbar>
-    <!-- <app-contacts class="flex-grow-1"></app-contacts> -->
-     <app-contact-form class="flex-grow-1"></app-contact-form>
+    <div class="flex-grow-1 overflow-auto">
+      <router-outlet></router-outlet>
+    </div>
   </div>
 </div>
