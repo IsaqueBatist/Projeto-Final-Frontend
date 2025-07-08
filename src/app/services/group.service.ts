@@ -7,7 +7,7 @@ import { Group, GroupData } from '../models/Group';
   providedIn: 'root',
 })
 export class GroupService {
-  private apiUrl = 'http://3.95.24.238groups';
+  private apiUrl = 'http://3.95.24.238/groups';
 
   constructor(private http: HttpClient) {}
 
