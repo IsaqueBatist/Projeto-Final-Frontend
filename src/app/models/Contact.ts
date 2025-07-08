@@ -1,4 +1,11 @@
-interface Contact {
+import { Address } from './Address';
+import { Category } from './Category';
+import { Email } from './Email';
+import { Group } from './Group';
+import { Phone } from './Phone';
+import { Photo } from './Photo';
+
+export interface Contact {
   id: number;
   firstname: string;
   lastname: string;

@@ -1,4 +1,4 @@
-interface Phone {
+export interface Phone {
   id: number;
   label: string;
   phoneNumber: string;
