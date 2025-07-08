@@ -10,7 +10,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ContactFormComponent } from './components/contact-form/contact-form.component';
 import { provideHttpClient } from '@angular/common/http';
-import { provideNgxMask } from 'ngx-mask';
+import { NgxMaskDirective,provideNgxMask } from 'ngx-mask';
 
 @NgModule({
   declarations: [
@@ -26,6 +26,7 @@ import { provideNgxMask } from 'ngx-mask';
     NgbModule,
     ReactiveFormsModule,
     FormsModule,
+    NgxMaskDirective
   ],
   providers: [provideHttpClient(), provideNgxMask()],
   bootstrap: [AppComponent],

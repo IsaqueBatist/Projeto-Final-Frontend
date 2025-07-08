@@ -1,38 +1,39 @@
-<form [formGroup]="contactForm" class="container-fluid m-auto my-3 w-100" style="max-width: 70rem">
-
-  <!-- Cabeçalho -->
-  <div class="row mb-3 align-items-center">
-    <div class="col-6">
-      <a class="text-primary" routerLink="">
-        <i class="bi bi-arrow-left fs-4"></i>
-      </a>
-    </div>
-    <div class="col-6 text-end">
-      <button type="submit" class="btn btn-primary" (click)="onSubmit()">Salvar</button>
-    </div>
-  </div>
-
+<form
+  [formGroup]="contactForm"
+  class="container-fluid m-auto my-3 w-100"
+  style="max-width: 70rem"
+>
   <!-- Nome e Sobrenome -->
   <div class="row g-2 mb-3">
     <div class="col-12 col-md-6">
       <label class="form-label">Nome</label>
-      <input formControlName="firstname" type="text" class="form-control" placeholder="Nome" />
+      <input
+        formControlName="firstname"
+        type="text"
+        class="form-control"
+        placeholder="Nome"
+      />
     </div>
     <div class="col-12 col-md-6">
       <label class="form-label">Sobrenome</label>
-      <input formControlName="lastname" type="text" class="form-control" placeholder="Sobrenome" />
+      <input
+        formControlName="lastname"
+        type="text"
+        class="form-control"
+        placeholder="Sobrenome"
+      />
     </div>
   </div>
 
   <!-- Apelido e Favorito -->
   <div class="row g-2 mb-3">
-    <div class="col-12 col-md-6">
-      <label class="form-label">Apelido</label>
-      <input formControlName="nickname" type="text" class="form-control" placeholder="Apelido" />
-    </div>
     <div class="col-12 col-md-6 d-flex align-items-end">
       <div class="form-check form-switch">
-        <input formControlName="isFavorite" type="checkbox" class="form-check-input" />
+        <input
+          formControlName="isFavorite"
+          type="checkbox"
+          class="form-check-input"
+        />
         <label class="form-check-label">Favorito</label>
       </div>
     </div>
@@ -53,16 +54,36 @@
       class="row g-2 mb-2"
     >
       <div class="col-12 col-md-4">
-        <input formControlName="label" class="form-control" placeholder="Label" />
+        <input
+          formControlName="label"
+          class="form-control"
+          placeholder="Label"
+        />
       </div>
       <div class="col-10 col-md-7">
-        <input formControlName="email" type="email" class="form-control" placeholder="email@exemplo.com" />
+        <input
+          formControlName="email"
+          type="email"
+          class="form-control"
+          placeholder="email@exemplo.com"
+        />
       </div>
-      <div class="col-2 d-flex align-items-center">
-        <i class="bi bi-x ms-2" style="cursor: pointer" (click)="removeEmail(i)"></i>
+      <div class="col d-flex align-items-center">
+        <i
+          class="bi bi-x ms-2"
+          style="cursor: pointer"
+          (click)="removeEmail(i)"
+        ></i>
       </div>
     </div>
-    <button type="button" class="btn btn-outline-primary btn-sm" (click)="addEmail()">+ Adicionar E-mail</button>
+    <br />
+    <button
+      type="button"
+      class="btn btn-outline-success btn-sm"
+      (click)="addEmail()"
+    >
+      + Adicionar E-mail
+    </button>
   </div>
 
   <!-- Telefones -->
@@ -74,16 +95,37 @@
       class="row g-2 mb-2"
     >
       <div class="col-12 col-md-4">
-        <input formControlName="label" class="form-control" placeholder="Label" />
+        <input
+          formControlName="label"
+          class="form-control"
+          placeholder="Label"
+        />
       </div>
-      <div class="col-10 col-md-7">
-        <input formControlName="phoneNumber" type="tel" class="form-control" placeholder="(00) 00000-0000" />
+      <div class="col-8 col-md-7">
+        <input
+          formControlName="phoneNumber"
+          type="tel"
+          mask="(00) 00000-0000"
+          class="form-control"
+          placeholder="(00) 00000-0000"
+        />
       </div>
-      <div class="col-2 d-flex align-items-center">
-        <i class="bi bi-x ms-2" style="cursor: pointer" (click)="removePhone(i)"></i>
+      <div class="col d-flex align-items-center">
+        <i
+          class="bi bi-x ms-2"
+          style="cursor: pointer"
+          (click)="removePhone(i)"
+        ></i>
       </div>
     </div>
-    <button type="button" class="btn btn-outline-primary btn-sm" (click)="addPhone()">+ Adicionar Telefone</button>
+    <br />
+    <button
+      type="button"
+      class="btn btn-outline-success btn-sm"
+      (click)="addPhone()"
+    >
+      + Adicionar Telefone
+    </button>
   </div>
 
   <!-- Endereços -->
@@ -95,33 +137,77 @@
       class="border p-3 rounded mb-3"
     >
       <div class="d-flex justify-content-end">
-        <i class="bi bi-x" style="cursor: pointer" (click)="removeAddress(i)"></i>
+        <i
+          class="bi bi-x"
+          style="cursor: pointer"
+          (click)="removeAddress(i)"
+        ></i>
       </div>
-      <input formControlName="country" class="form-control mb-2" placeholder="País" />
+      <input
+        formControlName="country"
+        class="form-control mb-2"
+        placeholder="País"
+      />
       <div class="row g-2 mb-2">
         <div class="col-12 col-md-10">
-          <input formControlName="street" class="form-control" placeholder="Rua" />
+          <input
+            formControlName="street"
+            class="form-control"
+            placeholder="Rua"
+          />
         </div>
         <div class="col-12 col-md-2">
-          <input formControlName="number" class="form-control" placeholder="Número" />
+          <input
+            formControlName="number"
+            class="form-control"
+            placeholder="Número"
+          />
         </div>
       </div>
       <div class="row g-2 mb-2">
         <div class="col-12 col-md-6">
-          <input formControlName="city" class="form-control" placeholder="Cidade" />
+          <input
+            formControlName="city"
+            class="form-control"
+            placeholder="Cidade"
+          />
         </div>
         <div class="col-12 col-md-3">
-          <input formControlName="state" class="form-control" placeholder="Estado" />
+          <input
+            formControlName="state"
+            class="form-control"
+            placeholder="Estado"
+          />
         </div>
         <div class="col-12 col-md-3">
-          <input formControlName="postalCode" class="form-control" placeholder="CEP" />
+          <input
+            formControlName="postalCode"
+            class="form-control"
+            placeholder="CEP"
+            mask="00000-000"
+          />
         </div>
       </div>
-      <input formControlName="neighborhood" class="form-control mb-2" placeholder="Bairro" />
-      
-      <input formControlName="complement" class="form-control mb-2" placeholder="Complemento" />
+      <input
+        formControlName="neighborhood"
+        class="form-control mb-2"
+        placeholder="Bairro"
+      />
+
+      <input
+        formControlName="complement"
+        class="form-control mb-2"
+        placeholder="Complemento"
+      />
     </div>
-    <button type="button" class="btn btn-outline-primary btn-sm" (click)="addAddress()">+ Adicionar Endereço</button>
+    <br />
+    <button
+      type="button"
+      class="btn btn-outline-success btn-sm"
+      (click)="addAddress()"
+    >
+      + Adicionar Endereço
+    </button>
   </div>
 
   <!-- Categorias -->
@@ -133,13 +219,19 @@
         class="badge bg-light border text-secondary d-flex align-items-center px-2 py-1 rounded-pill"
       >
         {{ category.name }}
-        <i class="bi bi-x ms-2" style="cursor: pointer" (click)="removeCategory(category)"></i>
+        <i
+          class="bi bi-x ms-2"
+          style="cursor: pointer"
+          (click)="removeCategory(category)"
+        ></i>
       </div>
-      <i class="bi bi-plus-lg" (click)="openModal(modalAddCategory)" style="cursor: pointer"></i>
+      <i
+        class="bi bi-plus-lg"
+        (click)="openModal(modalAddCategory)"
+        style="cursor: pointer"
+      ></i>
     </div>
   </div>
-
-  
 
   <!-- Grupos -->
   <div class="mb-3">
@@ -150,16 +242,37 @@
         class="badge bg-light border text-secondary d-flex align-items-center px-2 py-1 rounded-pill"
       >
         {{ group.name }}
-        <i class="bi bi-x ms-2" style="cursor: pointer" (click)="removeGroup(i)"></i>
+        <i
+          class="bi bi-x ms-2"
+          style="cursor: pointer"
+          (click)="removeGroup(i)"
+        ></i>
       </div>
     </div>
-    <i class="bi bi-plus-lg" (click)="openModal(modalAddGroup)" style="cursor: pointer"></i>
+    <i
+      class="bi bi-plus-lg"
+      (click)="openModal(modalAddGroup)"
+      style="cursor: pointer"
+    ></i>
   </div>
 
   <!-- Notas -->
   <div class="mb-3">
     <label class="form-label">Notas</label>
     <textarea formControlName="note" class="form-control" rows="3"></textarea>
+  </div>
+  <div class="row mt-4 justify-content-end">
+    <div class="col-auto">
+      <button type="button" class="btn btn-secondary">Cancelar</button>
+    </div>
+    <div class="col-auto">
+      <button *ngIf="!contactId" type="submit" class="btn btn-primary" (click)="onCeateContact()">
+        Criar
+      </button>
+      <button *ngIf="contactId" type="submit" class="btn btn-primary" (click)="onSaveContact()">
+        Salvar
+      </button>
+    </div>
   </div>
 </form>
 

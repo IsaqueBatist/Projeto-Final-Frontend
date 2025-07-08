@@ -1,5 +1,11 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Category } from '../../models/Category';
@@ -20,6 +26,7 @@ export class ContactFormComponent implements OnInit {
   selectedGroups: Group[] = [];
   selectedGroup: Group = {} as Group;
   selectedCategory: Category = {} as Category;
+  contactId: number = 0;
 
   constructor(
     private fb: FormBuilder,
@@ -33,7 +40,6 @@ export class ContactFormComponent implements OnInit {
     this.contactForm = this.fb.group({
       firstname: ['', Validators.required],
       lastname: ['', Validators.required],
-      nickname: [''],
       birthDate: [''],
       isFavorite: [false],
       emails: this.fb.array([this.createEmailField()]),
@@ -45,9 +51,9 @@ export class ContactFormComponent implements OnInit {
     });
   }
   ngOnInit(): void {
-    let contactId = Number(this.activedRoute.snapshot.paramMap.get('id'));
-    if (contactId != 0) {
-      this.setContactById(contactId);
+    this.contactId = Number(this.activedRoute.snapshot.paramMap.get('id'));
+    if (this.contactId != 0) {
+      this.setContactById(this.contactId);
     }
     this.getCategoriesData();
     this.getGroupData();
@@ -57,7 +63,6 @@ export class ContactFormComponent implements OnInit {
     this.contactService.getContactById(id).subscribe({
       next: (contact) => {
         this.contactForm.patchValue({
-          id: contact.id,
           firstname: contact.firstname,
           lastname: contact.lastname,
           birthDate: contact.birthDate,
@@ -71,7 +76,7 @@ export class ContactFormComponent implements OnInit {
           console.log(address);
           this.addresses.push(
             this.fb.group({
-              id: [address.id],
+              id: [address.id || ''],
               street: [address.street || ''],
               number: [address.number || ''],
               complement: [address.complement || ''],
@@ -89,7 +94,7 @@ export class ContactFormComponent implements OnInit {
         contact.phones.forEach((phone) => {
           this.phones.push(
             this.fb.group({
-              id: [phone.id],
+              id: [phone.id || ''],
               label: [phone.label || ''],
               phoneNumber: [phone.phoneNumber || '', Validators.required],
             })
@@ -101,7 +106,7 @@ export class ContactFormComponent implements OnInit {
         contact.emails.forEach((email) => {
           this.emails.push(
             this.fb.group({
-              id: [email.id],
+              id: [email.id || ''],
               label: [email.label || ''],
               email: [
                 email.email || '',
@@ -116,7 +121,7 @@ export class ContactFormComponent implements OnInit {
         contact.categories.forEach((category) => {
           this.categories.push(
             this.fb.group({
-              id: [category.id],
+              id: [category.id || ''],
               name: [category.name],
             })
           );
@@ -127,7 +132,7 @@ export class ContactFormComponent implements OnInit {
         contact.groups.forEach((group) => {
           this.groups.push(
             this.fb.group({
-              id: [group.id],
+              id: [group.id || ''],
               name: [group.name],
             })
           );
@@ -161,7 +166,6 @@ export class ContactFormComponent implements OnInit {
 
   createPhoneField(): FormGroup {
     return this.fb.group({
-      id: [''],
       phoneNumber: ['', Validators.required],
       label: [''],
     });
@@ -231,7 +235,7 @@ export class ContactFormComponent implements OnInit {
   }
 
   removeGroup(index: number): void {
-    this.groups.removeAt(index)
+    this.groups.removeAt(index);
   }
 
   isCategorySelected(cat: Category) {
@@ -271,7 +275,16 @@ export class ContactFormComponent implements OnInit {
     }
   }
 
-  onSubmit(): void {
+  onSaveContact() {
+    if (this.contactForm.valid) {
+      console.log(this.contactForm.value);
+      this.contactService
+        .updateContact(this.contactId, this.contactForm.value)
+        .subscribe(() => this.router.navigate(['']));
+    }
+  }
+
+  onCeateContact(): void {
     if (this.contactForm.valid) {
       const contact = this.contactForm.value;
       console.log(this.contactForm.value);
