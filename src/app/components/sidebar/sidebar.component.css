@@ -5,7 +5,7 @@
   gap: 2px;
   width: 250px;
   height: 100vh;
-  position: fixed;
+  position: relative;
   top: 0;
   left: 0;
   background-color: #343a40;

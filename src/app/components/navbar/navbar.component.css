@@ -1,0 +1,33 @@
+.navbar-custom {
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+.navbar-brand {
+  font-weight: 500;
+  color: #555;
+}
+
+.form-control:focus {
+  box-shadow: none;
+  border-color: #20c9c9;
+}
+
+.search-wrapper {
+  max-width: 250px;
+  position: relative;
+}
+
+.search-wrapper input {
+  padding-right: 2rem;
+}
+
+.search-wrapper i {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #20c9c9;
+  pointer-events: none;
+}
