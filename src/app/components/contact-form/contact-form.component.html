@@ -1,0 +1,326 @@
+<div class="container-fluid mt-4">
+  <div class="row">
+    <!-- Formulário -->
+    <div class="col-md-9">
+      <div class="card border-0 shadow-sm">
+        <div class="card-header bg-light border-bottom">
+          <h5 class="mb-0">Novo Contato</h5>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+            <div class="row g-3">
+              <!-- Foto e Info Básica -->
+              <div class="col-md-3">
+                <div class="d-flex flex-column align-items-center">
+                  <div class="avatar-upload mb-3">
+                    <div
+                      class="avatar-preview rounded-circle bg-light d-flex justify-content-center align-items-center"
+                      style="width: 120px; height: 120px"
+                    >
+                      <img
+                        *ngIf="contactForm.get('photo')?.value"
+                        [src]="contactForm.get('photo')?.value"
+                        class="img-fluid rounded-circle"
+                      />
+                      <i
+                        *ngIf="!contactForm.get('photo')?.value"
+                        class="bi bi-person-fill text-muted"
+                        style="font-size: 5rem"
+                      ></i>
+                    </div>
+                    <input type="file" id="photo" class="d-none" />
+                    <label
+                      for="photo"
+                      class="btn btn-sm btn-outline-primary mt-2"
+                      >Adicionar Foto</label
+                    >
+                  </div>
+                  <div class="form-check form-switch">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="isFavorite"
+                      formControlName="isFavorite"
+                    />
+                    <label class="form-check-label" for="isFavorite"
+                      >Favorito</label
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-9">
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label for="firstname" class="form-label">Nome</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="firstname"
+                      formControlName="firstname"
+                      required
+                    />
+                  </div>
+                  <div class="col-md-6">
+                    <label for="lastname" class="form-label">Sobrenome</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="lastname"
+                      formControlName="lastname"
+                      required
+                    />
+                  </div>
+                  <div class="col-md-6">
+                    <label for="birthDate" class="form-label"
+                      >Data de Nascimento</label
+                    >
+                    <input
+                      type="date"
+                      class="form-control"
+                      id="birthDate"
+                      formControlName="birthDate"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- E-mails -->
+              <div class="col-12">
+                <div
+                  class="d-flex justify-content-between align-items-center mb-2"
+                >
+                  <h6 class="mb-0">E-mails</h6>
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-outline-success"
+                    (click)="addEmail()"
+                  >
+                    <i class="bi bi-plus"></i> Adicionar
+                  </button>
+                </div>
+                <div formArrayName="emails">
+                  <div
+                    *ngFor="let email of emails.controls; let i = index"
+                    [formGroupName]="i"
+                    class="row g-2 mb-2"
+                  >
+                    <div class="col-md-8">
+                      <input
+                        type="email"
+                        class="form-control"
+                        placeholder="E-mail"
+                        formControlName="email"
+                      />
+                    </div>
+                    <div class="col-md-3">
+                      <select class="form-select" formControlName="type">
+                        <option value="personal">Pessoal</option>
+                        <option value="work">Trabalho</option>
+                        <option value="other">Outro</option>
+                      </select>
+                    </div>
+                    <div class="col-md-1">
+                      <button
+                        type="button"
+                        class="btn btn-sm btn-outline-danger"
+                        (click)="removeEmail(i)"
+                      >
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Telefones -->
+              <div class="col-12">
+                <div
+                  class="d-flex justify-content-between align-items-center mb-2"
+                >
+                  <h6 class="mb-0">Telefones</h6>
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-outline-success"
+                    (click)="addPhone()"
+                  >
+                    <i class="bi bi-plus"></i> Adicionar
+                  </button>
+                </div>
+                <div formArrayName="phones">
+                  <div
+                    *ngFor="let phone of phones.controls; let i = index"
+                    [formGroupName]="i"
+                    class="row g-2 mb-2"
+                  >
+                    <div class="col-md-8">
+                      <input
+                        type="tel"
+                        class="form-control"
+                        placeholder="Número"
+                        formControlName="number"
+                      />
+                    </div>
+                    <div class="col-md-3">
+                      <select class="form-select" formControlName="type">
+                        <option value="mobile">Celular</option>
+                        <option value="home">Residencial</option>
+                        <option value="work">Trabalho</option>
+                        <option value="other">Outro</option>
+                      </select>
+                    </div>
+                    <div class="col-md-1">
+                      <button
+                        type="button"
+                        class="btn btn-sm btn-outline-danger"
+                        (click)="removePhone(i)"
+                      >
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Endereços -->
+              <div class="col-12">
+                <div
+                  class="d-flex justify-content-between align-items-center mb-2"
+                >
+                  <h6 class="mb-0">Endereços</h6>
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-outline-success"
+                    (click)="addAddress()"
+                  >
+                    <i class="bi bi-plus"></i> Adicionar
+                  </button>
+                </div>
+                <div formArrayName="addresses">
+                  <div
+                    *ngFor="let address of addresses.controls; let i = index"
+                    [formGroupName]="i"
+                    class="mb-3 p-3 border rounded"
+                  >
+                    <div class="row g-2">
+                      <div class="col-md-6">
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Rua"
+                          formControlName="street"
+                        />
+                      </div>
+                      <div class="col-md-6">
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Cidade"
+                          formControlName="city"
+                        />
+                      </div>
+                      <div class="col-md-4">
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Estado"
+                          formControlName="state"
+                        />
+                      </div>
+                      <div class="col-md-3">
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="CEP"
+                          formControlName="zipCode"
+                        />
+                      </div>
+                      <div class="col-md-4">
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="País"
+                          formControlName="country"
+                        />
+                      </div>
+                      <div class="col-md-1">
+                        <button
+                          type="button"
+                          class="btn btn-sm btn-outline-danger"
+                          (click)="removeAddress(i)"
+                        >
+                          <i class="bi bi-trash"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Categorias e Grupos -->
+              <!-- <div class="col-md-6">
+                <label class="form-label">Categorias</label>
+                <div class="border rounded p-2">
+                  <div
+                    *ngFor="let category of categoriesList"
+                    class="form-check"
+                  >
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      [value]="category.id"
+                      (change)="onCategoryChange($event, category)"
+                    />
+                    <label class="form-check-label">{{ category.name }}</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Grupos</label>
+                <div class="border rounded p-2">
+                  <div *ngFor="let group of groups.register" class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      [value]="group.id"
+                      (change)="onGroupChange($event, group)"
+                    />
+                    <label class="form-check-label">{{ group.name }}</label>
+                  </div>
+                </div>
+              </div> -->
+
+              <!-- Notas -->
+              <div class="col-12">
+                <label for="note" class="form-label">Notas</label>
+                <textarea
+                  class="form-control"
+                  id="note"
+                  rows="3"
+                  formControlName="note"
+                ></textarea>
+              </div>
+
+              <!-- Botões de ação -->
+              <div class="col-12">
+                <div class="d-flex justify-content-end gap-2">
+                  <button type="button" class="btn btn-outline-secondary">
+                    Cancelar
+                  </button>
+                  <button
+                    type="submit"
+                    class="btn btn-primary"
+                    [disabled]="!contactForm.valid"
+                  >
+                    Salvar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
