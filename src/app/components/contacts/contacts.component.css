@@ -8,6 +8,7 @@
 }
 .contact-card:hover {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
+  cursor: pointer !important;
   .actions-hidden {
     visibility: visible;
   }

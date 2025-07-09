@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { Contact } from '../../models/Contact';
 import { ContactService } from '../../services/contact.service';
 import { SearchServiceService } from '../../services/search-service.service';
@@ -9,6 +9,7 @@ import { GroupService } from '../../services/group.service';
 import { CommonModule } from '@angular/common';
 import { MaskPipe } from '../../pipes/mask.pipe';
 import { SharedDataService } from '../../services/shared-data.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-contacts',
@@ -21,17 +22,18 @@ export class ContactsComponent implements OnInit {
   isFavorite: boolean = false;
   categories: Category[] = [];
   groups: Group[] = [];
-
+  selectContact: Contact = {} as Contact
   //Pagination
   currentPage = 1;
-  itemsPerPage = 9; 
+  itemsPerPage = 9;
 
   constructor(
     private contactService: ContactService,
     private searchService: SearchServiceService,
     private categoryService: CategoryService,
     private groupService: GroupService,
-    private sharedDataService: SharedDataService
+    private sharedDataService: SharedDataService,
+    private modalService: NgbModal
   ) {}
 
   ngOnInit(): void {
@@ -71,7 +73,7 @@ export class ContactsComponent implements OnInit {
     });
 
     //Group and Category data listen
-    
+
     this.sharedDataService.categories$.subscribe((cats) => {
       this.categories = cats;
     });
@@ -147,5 +149,15 @@ export class ContactsComponent implements OnInit {
     this.contactService
       .deleteContact(id)
       .subscribe(() => this.getContactData());
+  }
+
+  //Modal
+  openModal(templateRef: TemplateRef<any>, contact: Contact) {
+    const modalRef = this.modalService.open(templateRef, { centered: true, size: 'md' });
+    this.selectContact = contact
+
+    modalRef.result.finally(() => {
+      this.selectContact = {} as Contact
+    })
   }
 }
