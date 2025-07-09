@@ -30,6 +30,7 @@ export class ContactFormComponent implements OnInit {
   contactId: number = 0;
   uploadedPhoto?: File;
   previewFoto?: string;
+  submitted = false;
 
   constructor(
     private fb: FormBuilder,
@@ -136,7 +137,7 @@ export class ContactFormComponent implements OnInit {
               label: [email.label || ''],
               email: [
                 email.email || '',
-                [Validators.required, Validators.email],
+                [Validators.required],
               ],
             })
           );
@@ -210,6 +211,13 @@ export class ContactFormComponent implements OnInit {
     });
   }
 
+  get firstname() {
+    return this.contactForm.get('firstname');
+  }
+
+  get lastname() {
+    return this.contactForm.get('lastname');
+  }
   // Getters para os FormArrays
   get emails(): FormArray {
     return this.contactForm.get('emails') as FormArray;
@@ -302,8 +310,8 @@ export class ContactFormComponent implements OnInit {
   }
 
   onSaveContact() {
+    this.submitted = true;
     if (this.contactForm.valid) {
-      console.log(this.contactForm.value);
       this.contactService
         .updateContact(
           this.contactId,
@@ -311,14 +319,14 @@ export class ContactFormComponent implements OnInit {
           this.uploadedPhoto
         )
         .subscribe(() => this.router.navigate(['']));
-        console.log(this.uploadedPhoto)
     }
   }
 
   onCeateContact(): void {
+    console.log(this.contactForm.get('emails'))
+    this.submitted = true;
     if (this.contactForm.valid) {
       const contact = this.contactForm.value;
-      console.log(this.contactForm.value);
       this.contactService
         .createContact(contact, this.uploadedPhoto)
         .subscribe(() => this.router.navigate(['']));

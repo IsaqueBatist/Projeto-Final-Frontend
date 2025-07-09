@@ -107,16 +107,33 @@
         type="text"
         class="form-control"
         placeholder="Nome"
+        [class.is-invalid]="submitted && firstname?.invalid"
       />
+      <!-- Nome Obrigatorio-->
+      <div
+        class="invalid-feedback"
+        *ngIf="submitted && firstname?.errors?.['required']"
+        [class.is-invalid]="submitted && firstname?.invalid"
+      >
+        Nome é obrigatório.
+      </div>
     </div>
     <div class="col-12 col-md-6">
       <label class="form-label">Sobrenome</label>
       <input
         formControlName="lastname"
         type="text"
+        [class.is-invalid]="submitted && lastname?.invalid"
         class="form-control"
         placeholder="Sobrenome"
       />
+      <!-- Sobrenome Obrigatório-->
+      <div
+        class="invalid-feedback"
+        *ngIf="submitted && lastname?.errors?.['required']"
+      >
+        Sobrenome é obrigatório.
+      </div>
     </div>
   </div>
 
@@ -130,7 +147,7 @@
   <div formArrayName="emails" class="mb-3">
     <label class="form-label">E-mails</label>
     <div
-      *ngFor="let email of emails.controls; let i = index"
+      *ngFor="let email of emails.controls as emailGroup; let i = index"
       [formGroupName]="i"
       class="row g-2 mb-2"
     >
@@ -147,7 +164,11 @@
           type="email"
           class="form-control"
           placeholder="email@exemplo.com"
+          [class.is-invalid]="submitted && email?.invalid"
         />
+        <div class="invalid-feedback" *ngIf="submitted && email.invalid">
+          E-mail é obrigatório.
+        </div>
       </div>
       <div class="col d-flex align-items-center">
         <i
@@ -157,6 +178,8 @@
         ></i>
       </div>
     </div>
+    <!-- E-mail obrigatório -->
+
     <br />
     <button
       type="button"
@@ -189,7 +212,12 @@
           mask="(00) 00000-0000"
           class="form-control"
           placeholder="(00) 00000-0000"
+          [class.is-invalid]="submitted && phones?.invalid"
         />
+        <!-- Telefone obrigatório -->
+        <div class="invalid-feedback" *ngIf="submitted && phones.invalid">
+          Telefone é obrigatório.
+        </div>
       </div>
       <div class="col d-flex align-items-center">
         <i
