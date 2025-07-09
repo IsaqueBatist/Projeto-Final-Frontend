@@ -15,7 +15,11 @@
     Adicionar Contato
   </a>
 
-  <a class="d-flex align-items-center gap-2 mb-2" routerLink="" (click)="onSelectContacts()">
+  <a
+    class="d-flex align-items-center gap-2 mb-2"
+    routerLink=""
+    (click)="onSelectContacts()"
+  >
     <i class="bi bi-person"></i>
     Contacts
   </a>
@@ -27,7 +31,7 @@
       <i class="bi bi-bookmark"></i>
       <span>Categories</span>
     </div>
-    <a href="#" class="text-white" (click)="openCategoryModal(modalCategory)">
+    <a class="text-white" (click)="openCategoryModal(modalCategory)">
       <i class="bi bi-plus-circle"></i>
     </a>
   </div>
@@ -35,10 +39,7 @@
   <ul class="list-unstyled ps-4 d-flex flex-column gap-2">
     <li *ngFor="let category of categories" class="sidebar-item">
       <div class="d-flex justify-content-between align-items-center">
-        <a
-          href="#"
-          class="text-white text-decoration-none py-1 flex-grow-1"
-        >
+        <a class="text-white text-decoration-none py-1 flex-grow-1">
           {{ category.name }}
         </a>
         <div class="sidebar-actions">
@@ -61,7 +62,7 @@
       <i class="bi bi-people"></i>
       <span>Grupos</span>
     </div>
-    <a href="#" class="text-white" (click)="openGroupModal(modalGroup)">
+    <a class="text-white" (click)="openGroupModal(modalGroup)">
       <i class="bi bi-plus-circle"></i>
     </a>
   </div>
@@ -69,10 +70,7 @@
   <ul class="list-unstyled ps-4 d-flex flex-column gap-2">
     <li *ngFor="let group of groups" class="sidebar-item">
       <div class="d-flex justify-content-between align-items-center">
-        <a
-          href="#"
-          class="text-white text-decoration-none py-1 flex-grow-1"
-        >
+        <a class="text-white text-decoration-none py-1 flex-grow-1">
           {{ group.name }}
         </a>
         <div class="sidebar-actions">

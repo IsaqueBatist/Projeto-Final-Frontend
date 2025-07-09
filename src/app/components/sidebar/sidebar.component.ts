@@ -5,6 +5,7 @@ import { Group } from '../../models/Group';
 import { CategoryService } from '../../services/category.service';
 import { GroupService } from '../../services/group.service';
 import { SearchServiceService } from '../../services/search-service.service';
+import { SharedDataService } from '../../services/shared-data.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -25,7 +26,8 @@ export class SidebarComponent implements OnInit {
     private modalService: NgbModal,
     private categoryService: CategoryService,
     private groupService: GroupService,
-    private searchService: SearchServiceService
+    private searchService: SearchServiceService,
+    private sharedDataService: SharedDataService
   ) {}
 
   categories: Category[] = [];
@@ -49,11 +51,17 @@ export class SidebarComponent implements OnInit {
   getCategoriesData() {
     this.categoryService
       .getCategories()
-      .subscribe((data) => (this.categories = data));
+      .subscribe((data) => (
+        this.categories = data,
+        this.sharedDataService.updateCategories(data)
+      ));
   }
 
   getGroupData() {
-    this.groupService.getGroupies().subscribe((data) => (this.groups = data));
+    this.groupService.getGroupies().subscribe((data) => {
+      this.groups = data
+      this.sharedDataService.updateGroups(data)
+    });
   }
 
   deleteGroup(id: number) {
@@ -162,7 +170,7 @@ export class SidebarComponent implements OnInit {
   }
 
   //pesquisa
-  onSelectContacts(){
+  onSelectContacts() {
     this.searchService.setSelectedCategory(null);
     this.searchService.setSelectedGroup(null);
   }

@@ -13,6 +13,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { NgxMaskDirective,provideNgxMask } from 'ngx-mask';
 import { RouterModule } from '@angular/router';
 import { MaskPipe } from './pipes/mask.pipe';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { MaskPipe } from './pipes/mask.pipe';
     ReactiveFormsModule,
     FormsModule,
     NgxMaskDirective,
-    RouterModule
+    RouterModule,
+    NgxPaginationModule
   ],
   exports: [
     MaskPipe

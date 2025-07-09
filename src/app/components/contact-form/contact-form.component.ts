@@ -13,6 +13,7 @@ import { Group } from '../../models/Group';
 import { CategoryService } from '../../services/category.service';
 import { ContactService } from '../../services/contact.service';
 import { GroupService } from '../../services/group.service';
+import { SharedDataService } from '../../services/shared-data.service';
 
 @Component({
   selector: 'app-contact-form',
@@ -35,7 +36,8 @@ export class ContactFormComponent implements OnInit {
     private groupService: GroupService,
     private modalService: NgbModal,
     private router: Router,
-    private activedRoute: ActivatedRoute
+    private activedRoute: ActivatedRoute,
+    private sharedDataService: SharedDataService
   ) {
     this.contactForm = this.fb.group({
       firstname: ['', Validators.required],
@@ -57,6 +59,16 @@ export class ContactFormComponent implements OnInit {
     }
     this.getCategoriesData();
     this.getGroupData();
+
+    //Categorie and Groups litener
+    this.sharedDataService.categories$.subscribe((cats) => {
+      this.selectedCategories = cats;
+    });
+
+    this.sharedDataService.groups$.subscribe((grps) => {
+      this.selectedGroups = grps;
+    });
+
   }
 
   setContactById(id: number) {

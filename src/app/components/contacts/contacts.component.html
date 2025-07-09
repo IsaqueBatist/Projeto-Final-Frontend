@@ -47,7 +47,14 @@
 
     <!-- Grid de Contatos -->
     <div class="row g-3">
-      <div class="col-md-4" *ngFor="let contact of contacts">
+      <div
+        class="col-md-4"
+        *ngFor="
+          let contact of contacts
+            | paginate
+              : { itemsPerPage: itemsPerPage, currentPage: currentPage }
+        "
+      >
         <div class="contact-card bg-white position-relative overflow-hidden">
           <div
             class="card-actions position-absolute top-0 end-0 p-2 actions-hidden"
@@ -82,6 +89,13 @@
           </div>
         </div>
       </div>
+      <pagination-controls
+        (pageChange)="currentPage = $event"
+        [autoHide]="true"
+        previousLabel="«"
+        nextLabel="»"
+        class="d-flex justify-content-center mt-3"
+      ></pagination-controls>
     </div>
   </div>
 </div>

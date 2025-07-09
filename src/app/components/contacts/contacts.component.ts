@@ -8,6 +8,7 @@ import { CategoryService } from '../../services/category.service';
 import { GroupService } from '../../services/group.service';
 import { CommonModule } from '@angular/common';
 import { MaskPipe } from '../../pipes/mask.pipe';
+import { SharedDataService } from '../../services/shared-data.service';
 
 @Component({
   selector: 'app-contacts',
@@ -21,11 +22,16 @@ export class ContactsComponent implements OnInit {
   categories: Category[] = [];
   groups: Group[] = [];
 
+  //Pagination
+  currentPage = 1;
+  itemsPerPage = 9; 
+
   constructor(
     private contactService: ContactService,
     private searchService: SearchServiceService,
     private categoryService: CategoryService,
-    private groupService: GroupService
+    private groupService: GroupService,
+    private sharedDataService: SharedDataService
   ) {}
 
   ngOnInit(): void {
@@ -62,6 +68,16 @@ export class ContactsComponent implements OnInit {
       } else {
         this.getContactData();
       }
+    });
+
+    //Group and Category data listen
+    
+    this.sharedDataService.categories$.subscribe((cats) => {
+      this.categories = cats;
+    });
+
+    this.sharedDataService.groups$.subscribe((grps) => {
+      this.groups = grps;
     });
 
     //Load data
@@ -101,6 +117,7 @@ export class ContactsComponent implements OnInit {
     this.searchService.setSelectedGroup(valor);
   }
   onFilterCategory(event: Event) {
+    this.getCategoriesData();
     const input = event.target as HTMLInputElement;
     const valor = input.value == 'null' ? null : input.value;
 
