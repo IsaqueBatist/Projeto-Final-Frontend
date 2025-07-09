@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ContactService } from '../../services/contact.service';
 import { Contact } from '../../models/Contact';
+import { ContactService } from '../../services/contact.service';
 import { SearchServiceService } from '../../services/search-service.service';
 
 @Component({
@@ -24,6 +24,13 @@ export class ContactsComponent implements OnInit {
         .searchByPartialName(term)
         .subscribe((data) => (this.contacts = data));
     });
+
+    this.searchService.favorites$.subscribe((favorite) => {
+      this.contactService
+        .searchByFavorites(favorite)
+        .subscribe((data) => (this.contacts = data));
+    });
+
     //Grupos
     this.searchService.selectedGroup$.subscribe((groupName) => {
       if (groupName) {
@@ -45,6 +52,20 @@ export class ContactsComponent implements OnInit {
         this.getContactData();
       }
     });
+  }
+
+  onFilterChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const valor = input.value;
+    if (valor === 'favoritos') {
+      this.filterFavorite(true);
+    } else {
+      this.getContactData();
+    }
+  }
+
+  filterFavorite(isFavorite: boolean) {
+    this.searchService.SearchFavorites(isFavorite);
   }
 
   getInitials(firstname: string, lastname: string): string {

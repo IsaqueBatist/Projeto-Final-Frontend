@@ -14,15 +14,22 @@ export class SearchServiceService {
   private selectedGroup = new BehaviorSubject<string | null>(null);
   selectedGroup$ = this.selectedGroup.asObservable();
 
+  private favorites = new BehaviorSubject<boolean>(false);
+  favorites$ = this.favorites.asObservable();
+
   setSearchTerm(term: string) {
     this.searchTermSubject.next(term);
   }
 
-  setSelectedCategory(name: string | null){
-    this.selectedCategory.next(name)
+  SearchFavorites(isFavorite: boolean) {
+    this.favorites.next(isFavorite);
   }
 
-  setSelectedGroup(name: string | null){
-    this.selectedGroup.next(name)
+  setSelectedCategory(name: string | null) {
+    this.selectedCategory.next(name);
+  }
+
+  setSelectedGroup(name: string | null) {
+    this.selectedGroup.next(name);
   }
 }

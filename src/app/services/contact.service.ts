@@ -31,6 +31,12 @@ export class ContactService {
     return this.http.put<void>(`${this.apiUrl}/${id}`, contact);
   }
 
+  searchByFavorites(isFavorite: boolean): Observable<Contact[]> {
+    return this.http.get<Contact[]>(`${this.apiUrl}/search/by-favorite`, {
+      params: new HttpParams().set('favorite', isFavorite),
+    });
+  }
+
   // DELETE
   deleteContact(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
