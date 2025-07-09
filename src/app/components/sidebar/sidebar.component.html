@@ -17,6 +17,7 @@
 
   <a
     class="d-flex align-items-center gap-2 mb-2"
+    style="cursor: pointer"
     routerLink=""
     (click)="onSelectContacts()"
   >
@@ -29,7 +30,7 @@
   >
     <div class="d-flex align-items-center gap-2">
       <i class="bi bi-bookmark"></i>
-      <span>Categories</span>
+      <span class="unselectable">Categories</span>
     </div>
     <a class="text-white" (click)="openCategoryModal(modalCategory)">
       <i class="bi bi-plus-circle"></i>
@@ -37,7 +38,7 @@
   </div>
 
   <ul class="list-unstyled ps-4 d-flex flex-column gap-2">
-    <li *ngFor="let category of categories" class="sidebar-item">
+    <li *ngFor="let category of categories" class="sidebar-item unselectable">
       <div class="d-flex justify-content-between align-items-center">
         <a class="text-white text-decoration-none py-1 flex-grow-1">
           {{ category.name }}
@@ -60,7 +61,7 @@
   >
     <div class="d-flex align-items-center gap-2">
       <i class="bi bi-people"></i>
-      <span>Grupos</span>
+      <span class="unselectable">Grupos</span>
     </div>
     <a class="text-white" (click)="openGroupModal(modalGroup)">
       <i class="bi bi-plus-circle"></i>
@@ -68,7 +69,7 @@
   </div>
 
   <ul class="list-unstyled ps-4 d-flex flex-column gap-2">
-    <li *ngFor="let group of groups" class="sidebar-item">
+    <li *ngFor="let group of groups" class="sidebar-item unselectable">
       <div class="d-flex justify-content-between align-items-center">
         <a class="text-white text-decoration-none py-1 flex-grow-1">
           {{ group.name }}

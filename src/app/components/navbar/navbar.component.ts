@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { SearchServiceService } from '../../services/search-service.service';
 
 @Component({
@@ -7,4 +7,10 @@ import { SearchServiceService } from '../../services/search-service.service';
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css',
 })
-export class NavbarComponent {}
+export class NavbarComponent {
+  @Output() setToggle = new EventEmitter<void>();
+
+  onToggleSidebar() {
+    this.setToggle.emit();
+  }
+}

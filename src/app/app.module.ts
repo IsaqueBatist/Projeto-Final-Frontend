@@ -14,6 +14,7 @@ import { NgxMaskDirective,provideNgxMask } from 'ngx-mask';
 import { RouterModule } from '@angular/router';
 import { MaskPipe } from './pipes/mask.pipe';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
     FormsModule,
     NgxMaskDirective,
     RouterModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    BrowserAnimationsModule
   ],
   exports: [
     MaskPipe

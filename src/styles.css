@@ -1,8 +1,9 @@
 body {
   font-family: "Segoe UI", sans-serif;
+  background-color: #f8f9fa;
 }
 
-.unselectable {
+* {
   user-select: none; /* Impede seleção de texto */
   -webkit-user-select: none; /* Para navegadores WebKit */
   -moz-user-select: none; /* Para Firefox */
