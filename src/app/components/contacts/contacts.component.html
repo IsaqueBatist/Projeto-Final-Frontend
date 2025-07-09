@@ -71,7 +71,7 @@
             <img
               class="avatar-circle bg-primary me-2"
               *ngIf="contact.photo"
-              [src]="`http://localhost:8080/contacts/photo/${contact.id}`"
+              [src]="`https://gerenciadorcontato.duckdns.org/contacts/contacts/photo/${contact.id}`"
               alt="user Photo"
             />
             <div *ngIf="!contact.photo" class="avatar-circle bg-primary me-2">
@@ -126,7 +126,10 @@
           >
             <img
               *ngIf="selectContact.photo"
-              [src]="'http://localhost:8080/contacts/photo/' + selectContact.id"
+              [src]="
+                'https://gerenciadorcontato.duckdns.org/contacts/contacts/photo/' +
+                selectContact.id
+              "
               class="img-fluid rounded-circle avatar-preview"
               alt="Foto"
             />

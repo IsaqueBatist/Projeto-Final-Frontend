@@ -7,7 +7,7 @@ import { Contact } from '../models/Contact';
   providedIn: 'root',
 })
 export class ContactService {
-  private apiUrl = 'http://localhost:8080/contacts';
+  private apiUrl = 'https://gerenciadorcontato.duckdns.org/contacts/contacts';
 
   constructor(private http: HttpClient) {}
 
@@ -37,9 +37,9 @@ export class ContactService {
   }
 
   // PUT
-  updateContact(id: number, contact: Contact, photo?:File): Observable<void> {
+  updateContact(id: number, contact: Contact, photo?: File): Observable<void> {
     const formData = new FormData();
-    
+
     formData.append(
       'contact',
       new Blob([JSON.stringify(contact)], { type: 'application/json' })

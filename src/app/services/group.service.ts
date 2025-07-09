@@ -7,7 +7,7 @@ import { Group, GroupData } from '../models/Group';
   providedIn: 'root',
 })
 export class GroupService {
-  private apiUrl = 'http://localhost:8080/groups';
+  private apiUrl = 'https://gerenciadorcontato.duckdns.org/contacts/groups';
 
   constructor(private http: HttpClient) {}
 

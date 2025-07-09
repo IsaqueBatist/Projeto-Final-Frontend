@@ -59,7 +59,7 @@ export class ContactFormComponent implements OnInit {
     this.contactId = Number(this.activedRoute.snapshot.paramMap.get('id'));
     if (this.contactId != 0) {
       this.setContactById(this.contactId);
-      this.previewFoto = `http://localhost:8080/contacts/photo/${this.contactId}`;
+      this.previewFoto = `https://gerenciadorcontato.duckdns.org/contacts/contacts/photo/${this.contactId}`;
     }
     this.getCategoriesData();
     this.getGroupData();
@@ -135,10 +135,7 @@ export class ContactFormComponent implements OnInit {
             this.fb.group({
               id: [email.id || ''],
               label: [email.label || ''],
-              email: [
-                email.email || '',
-                [Validators.required],
-              ],
+              email: [email.email || '', [Validators.required]],
             })
           );
         });
@@ -323,7 +320,7 @@ export class ContactFormComponent implements OnInit {
   }
 
   onCeateContact(): void {
-    console.log(this.contactForm.get('emails'))
+    console.log(this.contactForm.get('emails'));
     this.submitted = true;
     if (this.contactForm.valid) {
       const contact = this.contactForm.value;
