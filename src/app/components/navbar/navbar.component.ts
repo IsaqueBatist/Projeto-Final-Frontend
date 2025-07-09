@@ -7,11 +7,4 @@ import { SearchServiceService } from '../../services/search-service.service';
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css',
 })
-export class NavbarComponent {
-  constructor(private searchService: SearchServiceService) {}
-
-  search(event: Event) {
-    const input = event.target as HTMLInputElement;
-    this.searchService.setSearchTerm(input.value);
-  }
-}
+export class NavbarComponent {}

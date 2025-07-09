@@ -21,7 +21,7 @@ export class SearchServiceService {
     this.searchTermSubject.next(term);
   }
 
-  SearchFavorites(isFavorite: boolean) {
+  searchFavorites(isFavorite: boolean) {
     this.favorites.next(isFavorite);
   }
 

@@ -10,17 +10,37 @@
     <div class="d-flex justify-content-between align-items-center mb-3">
       <h4>Contacts</h4>
       <div class="actions-bar d-flex gap-2">
-        <select class="form-select form-select-sm">
-          <option selected>Sort by First Name</option>
+        <!--Ordenar?-->
+        <button
+          class="btn btn-outline-warning btn-sm"
+          (click)="onFilterFavorite()"
+        >
+          <i *ngIf="!isFavorite" class="bi bi-star"></i>
+          <i *ngIf="isFavorite" class="bi bi-star-fill"></i>
+        </button>
+        <select
+          class="form-select form-select-sm"
+          (change)="onFilterCategory($event)"
+        >
+          <option value="null" selected>Filter by Category</option>
+          <option *ngFor="let category of categories" [value]="category.name">
+            {{ category.name }}
+          </option>
         </select>
-        <select class="form-select form-select-sm" (change)="onFilterChange($event)">
-          <option value="null" selected>Filter by</option>
-          <option value="favoritos">Favorites</option>
+        <select
+          class="form-select form-select-sm"
+          (change)="onFilterGroup($event)"
+        >
+          <option value="null" selected>Filter by Group</option>
+          <option *ngFor="let group of groups" [value]="group.name">
+            {{ group.name }}
+          </option>
         </select>
         <input
           type="text"
           class="form-control form-control-sm"
           placeholder="Search for Contacts"
+          (input)="search($event)"
         />
       </div>
     </div>
@@ -42,7 +62,9 @@
             ></i>
           </div>
           <div class="d-flex align-items-center mb-2">
-            <div class="avatar-circle bg-primary me-2">DP</div>
+            <div class="avatar-circle bg-primary me-2">
+              {{ getInitials(contact.firstname, contact.lastname) }}
+            </div>
             <div>
               <strong>{{ contact.firstname + " " + contact.lastname }} </strong
               ><br />
@@ -52,7 +74,7 @@
           <div class="text-muted small">
             <div>
               <i class="bi bi-telephone"></i>
-              {{ contact.phones[0]?.phoneNumber }}
+              {{ contact.phones[0].phoneNumber | mask : "(99) 99999-9999" }}
             </div>
             <div>
               <i class="bi bi-envelope"></i> {{ contact.emails[0]?.email }}

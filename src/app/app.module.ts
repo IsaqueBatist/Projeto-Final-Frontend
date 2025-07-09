@@ -11,6 +11,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ContactFormComponent } from './components/contact-form/contact-form.component';
 import { provideHttpClient } from '@angular/common/http';
 import { NgxMaskDirective,provideNgxMask } from 'ngx-mask';
+import { RouterModule } from '@angular/router';
+import { MaskPipe } from './pipes/mask.pipe';
 
 @NgModule({
   declarations: [
@@ -19,6 +21,7 @@ import { NgxMaskDirective,provideNgxMask } from 'ngx-mask';
     ContactsComponent,
     NavbarComponent,
     ContactFormComponent,
+    MaskPipe,
   ],
   imports: [
     BrowserModule,
@@ -26,7 +29,11 @@ import { NgxMaskDirective,provideNgxMask } from 'ngx-mask';
     NgbModule,
     ReactiveFormsModule,
     FormsModule,
-    NgxMaskDirective
+    NgxMaskDirective,
+    RouterModule
+  ],
+  exports: [
+    MaskPipe
   ],
   providers: [provideHttpClient(), provideNgxMask()],
   bootstrap: [AppComponent],

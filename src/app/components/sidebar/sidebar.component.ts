@@ -161,13 +161,9 @@ export class SidebarComponent implements OnInit {
     this.currentGroupId = null;
   }
 
-  //pesquisas
-  onSelectCategory(category: Category) {
-    const categoryName = category ? category.name : null;
-    this.searchService.setSelectedCategory(categoryName);
-  }
-  onSelectGroup(group: Group) {
-    const categoryName = group ? group.name : null;
-    this.searchService.setSelectedGroup(categoryName);
+  //pesquisa
+  onSelectContacts(){
+    this.searchService.setSelectedCategory(null);
+    this.searchService.setSelectedGroup(null);
   }
 }
