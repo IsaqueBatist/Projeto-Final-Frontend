@@ -3,6 +3,101 @@
   class="container-fluid m-auto my-3 w-100"
   style="max-width: 70rem"
 >
+  <!-- Foto e Info Básica -->
+  <div class="row align-items-start mb-4">
+    <!-- Coluna da Foto e Favorito -->
+    <div
+      class="col-auto d-flex flex-column align-items-center"
+      style="min-width: 180px"
+    >
+      <div class="avatar-upload mb-3">
+        <div
+          class="avatar-preview rounded-circle bg-white d-flex justify-content-center align-items-center shadow-sm"
+          style="width: 100px; height: 100px"
+        >
+          <img
+            *ngIf="previewFoto"
+            [src]="previewFoto"
+            class="img-fluid rounded-circle avatar-preview"
+          />
+          <i
+            *ngIf="!previewFoto"
+            class="bi bi-person-fill text-muted"
+            style="font-size: 3rem"
+          ></i>
+        </div>
+        <input
+          type="file"
+          id="photo"
+          class="d-none"
+          (change)="onUploadPhoto($event)"
+        />
+        <label for="photo" class="btn btn-sm btn-outline-primary mt-2"
+          >Adicionar Foto</label
+        >
+      </div>
+
+      <div class="form-check form-switch mt-1">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          id="isFavorite"
+          formControlName="isFavorite"
+        />
+        <label class="form-check-label" for="isFavorite">Favorito</label>
+      </div>
+    </div>
+
+    <!-- Coluna das Categorias e Grupos -->
+    <div class="col ps-4">
+      <!-- Categorias -->
+      <div class="mb-3">
+        <label class="form-label">Categorias</label>
+        <div class="d-flex flex-wrap gap-2 mb-2">
+          <div
+            *ngFor="let category of categories.value"
+            class="badge bg-light border text-secondary d-flex align-items-center px-2 py-1 rounded-pill"
+          >
+            {{ category.name }}
+            <i
+              class="bi bi-x ms-2"
+              style="cursor: pointer"
+              (click)="removeCategory(category)"
+            ></i>
+          </div>
+          <i
+            class="bi bi-plus-lg"
+            (click)="openModal(modalAddCategory)"
+            style="cursor: pointer"
+          ></i>
+        </div>
+      </div>
+
+      <!-- Grupos -->
+      <div class="mb-3">
+        <label class="form-label">Grupos</label>
+        <div class="d-flex flex-wrap gap-2 mb-2">
+          <div
+            *ngFor="let group of groups.value; let i = index"
+            class="badge bg-light border text-secondary d-flex align-items-center px-2 py-1 rounded-pill"
+          >
+            {{ group.name }}
+            <i
+              class="bi bi-x ms-2"
+              style="cursor: pointer"
+              (click)="removeGroup(i)"
+            ></i>
+          </div>
+        </div>
+        <i
+          class="bi bi-plus-lg"
+          (click)="openModal(modalAddGroup)"
+          style="cursor: pointer"
+        ></i>
+      </div>
+    </div>
+  </div>
+
   <!-- Nome e Sobrenome -->
   <div class="row g-2 mb-3">
     <div class="col-12 col-md-6">
@@ -22,20 +117,6 @@
         class="form-control"
         placeholder="Sobrenome"
       />
-    </div>
-  </div>
-
-  <!-- Apelido e Favorito -->
-  <div class="row g-2 mb-3">
-    <div class="col-12 col-md-6 d-flex align-items-end">
-      <div class="form-check form-switch">
-        <input
-          formControlName="isFavorite"
-          type="checkbox"
-          class="form-check-input"
-        />
-        <label class="form-check-label">Favorito</label>
-      </div>
     </div>
   </div>
 
@@ -210,52 +291,6 @@
     </button>
   </div>
 
-  <!-- Categorias -->
-  <div class="mb-3">
-    <label class="form-label">Categorias</label>
-    <div class="d-flex flex-wrap gap-2 mb-2">
-      <div
-        *ngFor="let category of categories.value"
-        class="badge bg-light border text-secondary d-flex align-items-center px-2 py-1 rounded-pill"
-      >
-        {{ category.name }}
-        <i
-          class="bi bi-x ms-2"
-          style="cursor: pointer"
-          (click)="removeCategory(category)"
-        ></i>
-      </div>
-      <i
-        class="bi bi-plus-lg"
-        (click)="openModal(modalAddCategory)"
-        style="cursor: pointer"
-      ></i>
-    </div>
-  </div>
-
-  <!-- Grupos -->
-  <div class="mb-3">
-    <label class="form-label">Grupos</label>
-    <div class="d-flex flex-wrap gap-2 mb-2">
-      <div
-        *ngFor="let group of groups.value; let i = index"
-        class="badge bg-light border text-secondary d-flex align-items-center px-2 py-1 rounded-pill"
-      >
-        {{ group.name }}
-        <i
-          class="bi bi-x ms-2"
-          style="cursor: pointer"
-          (click)="removeGroup(i)"
-        ></i>
-      </div>
-    </div>
-    <i
-      class="bi bi-plus-lg"
-      (click)="openModal(modalAddGroup)"
-      style="cursor: pointer"
-    ></i>
-  </div>
-
   <!-- Notas -->
   <div class="mb-3">
     <label class="form-label">Notas</label>
@@ -263,13 +298,25 @@
   </div>
   <div class="row mt-4 justify-content-end">
     <div class="col-auto">
-      <button type="button" class="btn btn-secondary" routerLink="">Cancelar</button>
+      <button type="button" class="btn btn-secondary" routerLink="">
+        Cancelar
+      </button>
     </div>
     <div class="col-auto">
-      <button *ngIf="!contactId" type="submit" class="btn btn-primary" (click)="onCeateContact()">
+      <button
+        *ngIf="!contactId"
+        type="submit"
+        class="btn btn-primary"
+        (click)="onCeateContact()"
+      >
         Criar
       </button>
-      <button *ngIf="contactId" type="submit" class="btn btn-primary" (click)="onSaveContact()">
+      <button
+        *ngIf="contactId"
+        type="submit"
+        class="btn btn-primary"
+        (click)="onSaveContact()"
+      >
         Salvar
       </button>
     </div>

@@ -16,4 +16,5 @@ export interface Contact {
   groups: Group[];
   categories: Category[];
   note: string;
+  photo?: string;
 }

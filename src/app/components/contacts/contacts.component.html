@@ -60,7 +60,7 @@
           >
             <i
               class="bi bi-pencil text-primary me-2 cursor-pointer fs-5"
-              [routerLink]="['edit/', contact.id]"
+              [routerLink]="`edit/${contact.id}`"
             ></i>
             <i
               class="bi bi-trash text-danger cursor-pointer fs-5"
@@ -68,7 +68,13 @@
             ></i>
           </div>
           <div class="d-flex align-items-center mb-2" style="cursor: pointer">
-            <div class="avatar-circle bg-primary me-2">
+            <img
+              class="avatar-circle bg-primary me-2"
+              *ngIf="contact.photo"
+              [src]="`http://localhost:8080/contacts/photo/${contact.id}`"
+              alt="user Photo"
+            />
+            <div *ngIf="!contact.photo" class="avatar-circle bg-primary me-2">
               {{ getInitials(contact.firstname, contact.lastname) }}
             </div>
             <div>
@@ -107,42 +113,123 @@
 
   <div class="modal-body">
     <form class="container-fluid">
+      <!-- Foto, Favorito, Categorias e Grupos -->
+      <div class="row align-items-start mb-4">
+        <!-- Foto e Favorito -->
+        <div
+          class="col-auto d-flex flex-column align-items-center"
+          style="min-width: 180px"
+        >
+          <div
+            class="avatar-preview rounded-circle bg-white d-flex justify-content-center align-items-center shadow-sm mb-2"
+            style="width: 100px; height: 100px"
+          >
+            <img
+              *ngIf="selectContact.photo"
+              [src]="'http://localhost:8080/contacts/photo/' + selectContact.id"
+              class="img-fluid rounded-circle avatar-preview"
+              alt="Foto"
+            />
+            <i
+              *ngIf="!selectContact.photo"
+              class="bi bi-person-fill text-muted"
+              style="font-size: 3rem"
+            ></i>
+          </div>
+
+          <div class="form-check form-switch mt-1">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              [checked]="selectContact.isFavorite"
+              disabled
+            />
+            <label class="form-check-label">Favorito</label>
+          </div>
+        </div>
+
+        <!-- Categorias e Grupos -->
+        <div class="col ps-4">
+          <!-- Categorias -->
+          <div class="mb-3">
+            <label class="form-label">Categorias</label>
+            <div class="d-flex flex-wrap gap-2">
+              <span
+                class="badge bg-light border text-secondary px-2 py-1 rounded-pill"
+                *ngFor="let cat of selectContact.categories"
+              >
+                {{ cat.name }}
+              </span>
+            </div>
+          </div>
+
+          <!-- Grupos -->
+          <div class="mb-3">
+            <label class="form-label">Grupos</label>
+            <div class="d-flex flex-wrap gap-2">
+              <span
+                class="badge bg-light border text-secondary px-2 py-1 rounded-pill"
+                *ngFor="let grp of selectContact.groups"
+              >
+                {{ grp.name }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <!-- Nome e Sobrenome -->
       <div class="row g-2 mb-3">
         <div class="col-md-6">
           <label class="form-label">Nome</label>
-          <input type="text" class="form-control" [value]="selectContact.firstname" disabled />
+          <input
+            type="text"
+            class="form-control"
+            [value]="selectContact.firstname"
+            disabled
+          />
         </div>
         <div class="col-md-6">
           <label class="form-label">Sobrenome</label>
-          <input type="text" class="form-control" [value]="selectContact.lastname" disabled />
+          <input
+            type="text"
+            class="form-control"
+            [value]="selectContact.lastname"
+            disabled
+          />
         </div>
       </div>
 
-      <!-- Favorito e Data -->
-      <div class="row g-2 mb-3">
-        <div class="col-md-6 d-flex align-items-end">
-          <div class="form-check form-switch">
-            <input type="checkbox" class="form-check-input" [checked]="selectContact.isFavorite" disabled />
-            <label class="form-check-label">Favorito</label>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <label class="form-label">Data de Nascimento</label>
-          <input type="date" class="form-control" [value]="selectContact.birthDate" disabled />
-        </div>
+      <!-- Data de Nascimento -->
+      <div class="mb-3">
+        <label class="form-label">Data de Nascimento</label>
+        <input
+          type="date"
+          class="form-control"
+          [value]="selectContact.birthDate"
+          disabled
+        />
       </div>
 
       <!-- E-mails -->
       <div class="mb-3" *ngIf="selectContact.emails?.length">
         <label class="form-label">E-mails</label>
-        <div class="row g-2" *ngFor="let email of selectContact.emails">
+        <div class="row g-2 mb-2" *ngFor="let email of selectContact.emails">
           <div class="col-md-4">
-            <input type="text" class="form-control" [value]="email.label" disabled />
+            <input
+              type="text"
+              class="form-control"
+              [value]="email.label"
+              disabled
+            />
           </div>
           <div class="col-md-8">
-            <input type="email" class="form-control" [value]="email.email" disabled />
+            <input
+              type="email"
+              class="form-control"
+              [value]="email.email"
+              disabled
+            />
           </div>
         </div>
       </div>
@@ -150,12 +237,22 @@
       <!-- Telefones -->
       <div class="mb-3" *ngIf="selectContact.phones?.length">
         <label class="form-label">Telefones</label>
-        <div class="row g-2" *ngFor="let phone of selectContact.phones">
+        <div class="row g-2 mb-2" *ngFor="let phone of selectContact.phones">
           <div class="col-md-4">
-            <input type="text" class="form-control" [value]="phone.label" disabled />
+            <input
+              type="text"
+              class="form-control"
+              [value]="phone.label"
+              disabled
+            />
           </div>
           <div class="col-md-8">
-            <input type="tel" class="form-control" [value]="phone.phoneNumber" disabled />
+            <input
+              type="tel"
+              class="form-control"
+              [value]="phone.phoneNumber"
+              disabled
+            />
           </div>
         </div>
       </div>
@@ -163,64 +260,99 @@
       <!-- Endereços -->
       <div class="mb-3" *ngIf="selectContact.addresses?.length">
         <label class="form-label">Endereços</label>
-        <div class="border rounded p-3 mb-3" *ngFor="let addr of selectContact.addresses">
+        <div
+          class="border rounded p-3 mb-3"
+          *ngFor="let addr of selectContact.addresses"
+        >
           <div class="mb-2">
-            <input type="text" class="form-control" [value]="addr.country" placeholder="País" disabled />
+            <input
+              type="text"
+              class="form-control"
+              [value]="addr.country"
+              placeholder="País"
+              disabled
+            />
           </div>
           <div class="row g-2 mb-2">
             <div class="col-md-10">
-              <input type="text" class="form-control" [value]="addr.street" placeholder="Rua" disabled />
+              <input
+                type="text"
+                class="form-control"
+                [value]="addr.street"
+                placeholder="Rua"
+                disabled
+              />
             </div>
             <div class="col-md-2">
-              <input type="text" class="form-control" [value]="addr.number" placeholder="Número" disabled />
+              <input
+                type="text"
+                class="form-control"
+                [value]="addr.number"
+                placeholder="Número"
+                disabled
+              />
             </div>
           </div>
           <div class="row g-2 mb-2">
             <div class="col-md-6">
-              <input type="text" class="form-control" [value]="addr.city" placeholder="Cidade" disabled />
+              <input
+                type="text"
+                class="form-control"
+                [value]="addr.city"
+                placeholder="Cidade"
+                disabled
+              />
             </div>
             <div class="col-md-2">
-              <input type="text" class="form-control" [value]="addr.state" placeholder="Estado" disabled />
+              <input
+                type="text"
+                class="form-control"
+                [value]="addr.state"
+                placeholder="Estado"
+                disabled
+              />
             </div>
             <div class="col-md-4">
-              <input type="text" class="form-control" [value]="addr.postalCode" placeholder="CEP" disabled />
+              <input
+                type="text"
+                class="form-control"
+                [value]="addr.postalCode"
+                placeholder="CEP"
+                disabled
+              />
             </div>
           </div>
-          <div class="mb-1">
-            <input type="text" class="form-control" [value]="addr.neighborhood" placeholder="Bairro" disabled />
+          <div class="mb-2">
+            <input
+              type="text"
+              class="form-control"
+              [value]="addr.neighborhood"
+              placeholder="Bairro"
+              disabled
+            />
           </div>
           <div class="mb-2">
-            <input type="text" class="form-control" [value]="addr.complement" placeholder="Complemento" disabled />
+            <input
+              type="text"
+              class="form-control"
+              [value]="addr.complement"
+              placeholder="Complemento"
+              disabled
+            />
           </div>
-        </div>
-      </div>
-
-      <!-- Categorias -->
-      <div class="mb-3" *ngIf="selectContact.categories?.length">
-        <label class="form-label">Categorias</label>
-        <div class="d-flex flex-wrap gap-2">
-          <span class="badge bg-secondary" *ngFor="let cat of selectContact.categories">
-            {{ cat.name }}
-          </span>
-        </div>
-      </div>
-
-      <!-- Grupos -->
-      <div class="mb-3" *ngIf="selectContact.groups?.length">
-        <label class="form-label">Grupos</label>
-        <div class="d-flex flex-wrap gap-2">
-          <span class="badge bg-secondary" *ngFor="let grp of selectContact.groups">
-            {{ grp.name }}
-          </span>
         </div>
       </div>
 
       <!-- Notas -->
       <div class="mb-3">
         <label class="form-label">Notas</label>
-        <textarea class="form-control" rows="3" [value]="selectContact.note" disabled></textarea>
+        <textarea
+          class="form-control"
+          rows="3"
+          [value]="selectContact.note"
+          disabled
+        ></textarea>
       </div>
-
     </form>
   </div>
 

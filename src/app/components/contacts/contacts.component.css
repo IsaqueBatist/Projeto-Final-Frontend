@@ -30,6 +30,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* preenche sem distorcer */
+    display: block;
+  }
 }
 .actions-bar input {
   max-width: 200px;
@@ -59,4 +66,11 @@
 .bi-trash:hover {
   opacity: 1;
   color: #dc3545 !important;
+}
+
+.avatar-preview{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
 }

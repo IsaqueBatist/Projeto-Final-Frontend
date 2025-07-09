@@ -22,13 +22,32 @@ export class ContactService {
   }
 
   // POST
-  createContact(Contact: Contact): Observable<Contact> {
-    return this.http.post<Contact>(this.apiUrl, Contact);
+  createContact(contact: Contact, photo?: File): Observable<Contact> {
+    const formData = new FormData();
+
+    formData.append(
+      'contact',
+      new Blob([JSON.stringify(contact)], { type: 'application/json' })
+    );
+    if (photo) {
+      formData.append('photo', photo);
+    }
+
+    return this.http.post<Contact>(this.apiUrl, formData);
   }
 
   // PUT
-  updateContact(id: number, contact: Contact): Observable<void> {
-    return this.http.put<void>(`${this.apiUrl}/${id}`, contact);
+  updateContact(id: number, contact: Contact, photo?:File): Observable<void> {
+    const formData = new FormData();
+    
+    formData.append(
+      'contact',
+      new Blob([JSON.stringify(contact)], { type: 'application/json' })
+    );
+    if (photo) {
+      formData.append('photo', photo);
+    }
+    return this.http.put<void>(`${this.apiUrl}/${id}`, formData);
   }
 
   searchByFavorites(isFavorite: boolean): Observable<Contact[]> {

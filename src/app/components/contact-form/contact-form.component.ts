@@ -28,6 +28,8 @@ export class ContactFormComponent implements OnInit {
   selectedGroup: Group = {} as Group;
   selectedCategory: Category = {} as Category;
   contactId: number = 0;
+  uploadedPhoto?: File;
+  previewFoto?: string;
 
   constructor(
     private fb: FormBuilder,
@@ -56,6 +58,7 @@ export class ContactFormComponent implements OnInit {
     this.contactId = Number(this.activedRoute.snapshot.paramMap.get('id'));
     if (this.contactId != 0) {
       this.setContactById(this.contactId);
+      this.previewFoto = `http://localhost:8080/contacts/photo/${this.contactId}`;
     }
     this.getCategoriesData();
     this.getGroupData();
@@ -68,7 +71,18 @@ export class ContactFormComponent implements OnInit {
     this.sharedDataService.groups$.subscribe((grps) => {
       this.selectedGroups = grps;
     });
+  }
 
+  onUploadPhoto(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.uploadedPhoto = input.files[0];
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.previewFoto = reader.result as string;
+      };
+      reader.readAsDataURL(this.uploadedPhoto);
+    }
   }
 
   setContactById(id: number) {
@@ -291,8 +305,13 @@ export class ContactFormComponent implements OnInit {
     if (this.contactForm.valid) {
       console.log(this.contactForm.value);
       this.contactService
-        .updateContact(this.contactId, this.contactForm.value)
+        .updateContact(
+          this.contactId,
+          this.contactForm.value,
+          this.uploadedPhoto
+        )
         .subscribe(() => this.router.navigate(['']));
+        console.log(this.uploadedPhoto)
     }
   }
 
@@ -301,7 +320,7 @@ export class ContactFormComponent implements OnInit {
       const contact = this.contactForm.value;
       console.log(this.contactForm.value);
       this.contactService
-        .createContact(contact)
+        .createContact(contact, this.uploadedPhoto)
         .subscribe(() => this.router.navigate(['']));
     }
   }
