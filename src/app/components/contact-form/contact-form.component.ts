@@ -59,7 +59,7 @@ export class ContactFormComponent implements OnInit {
     this.contactId = Number(this.activedRoute.snapshot.paramMap.get('id'));
     if (this.contactId != 0) {
       this.setContactById(this.contactId);
-      this.previewFoto = `https://gerenciadorcontato.duckdns.org/contacts/contacts/photo/${this.contactId}`;
+      this.previewFoto = `https://gerenciadorcontato.duckdns.org/contacts/photo/${this.contactId}`;
     }
     this.getCategoriesData();
     this.getGroupData();

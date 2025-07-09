@@ -7,7 +7,7 @@ import { Category, CategoryData } from '../models/Category';
   providedIn: 'root',
 })
 export class CategoryService {
-  private apiUrl = 'https://gerenciadorcontato.duckdns.org/contacts/categories';
+  private apiUrl = 'https://gerenciadorcontato.duckdns.org/categories';
 
   constructor(private http: HttpClient) {}
 

@@ -7,7 +7,7 @@ import { Contact } from '../models/Contact';
   providedIn: 'root',
 })
 export class ContactService {
-  private apiUrl = 'https://gerenciadorcontato.duckdns.org/contacts/contacts';
+  private apiUrl = 'https://gerenciadorcontato.duckdns.org/contacts';
 
   constructor(private http: HttpClient) {}
 
