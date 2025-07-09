@@ -119,7 +119,6 @@ export class ContactsComponent implements OnInit {
     this.searchService.setSelectedGroup(valor);
   }
   onFilterCategory(event: Event) {
-    this.getCategoriesData();
     const input = event.target as HTMLInputElement;
     const valor = input.value == 'null' ? null : input.value;
 

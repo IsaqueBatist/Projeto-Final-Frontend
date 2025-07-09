@@ -362,6 +362,7 @@
       [(ngModel)]="selectedCategory"
       aria-label="Selecione uma categoria"
     >
+    <option [ngValue]="null" disabled selected>Selecionar categoria</option>
       <option
         *ngFor="let categorie of selectedCategories"
         [ngValue]="categorie"
@@ -388,6 +389,7 @@
       [(ngModel)]="selectedGroup"
       aria-label="Selecione um grupo"
     >
+      <option [ngValue]="null" disabled selected>Selecionar grupo</option>
       <option
         *ngFor="let group of selectedGroups"
         [ngValue]="group"

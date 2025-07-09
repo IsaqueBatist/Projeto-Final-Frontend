@@ -25,8 +25,8 @@ export class ContactFormComponent implements OnInit {
   contactForm: FormGroup;
   selectedCategories: Category[] = [];
   selectedGroups: Group[] = [];
-  selectedGroup: Group = {} as Group;
-  selectedCategory: Category = {} as Category;
+  selectedGroup: Group | null = null;
+  selectedCategory: Category | null = null;
   contactId: number = 0;
   uploadedPhoto?: File;
   previewFoto?: string;
@@ -295,7 +295,7 @@ export class ContactFormComponent implements OnInit {
       !this.isCategorySelected(this.selectedCategory)
     ) {
       categoriesArray.push(new FormControl(this.selectedCategory));
-      this.selectedCategory = {} as Category;
+      this.selectedCategory = null;
       modal.close();
     }
   }
@@ -304,7 +304,7 @@ export class ContactFormComponent implements OnInit {
     const groupsArray = this.contactForm.get('groups') as FormArray;
     if (this.selectedGroup && !this.isGroupSelected(this.selectedGroup)) {
       groupsArray.push(new FormControl(this.selectedGroup));
-      this.selectedGroup = {} as Group;
+      this.selectedGroup = null;
       modal.close();
     }
   }
